@@ -1,18 +1,15 @@
-import React from 'react'
-import { render } from 'react-dom'
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
-import { createLogger } from 'redux-logger'
-import thunk from 'redux-thunk'
-import rootReducer from './reducers'
-import App from './containers/App'
+import React from "react";
+import { render } from "react-dom";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import App from './components/App';
+import rootReducer from './reducers/index';
 
-const store = createStore(rootReducer)
-
+const store = createStore(rootReducer);
 render(
   <Provider store={store}>
     <App />
-   </Provider> 
+   </Provider>
   ,
-  document.getElementById('root')
-)
+  document.getElementById("root")
+);

@@ -52,7 +52,7 @@ export default function check(state = initialState, action) {
       }
 
     case "PRESS_ONE":
-      if(state.selectAll) {
+      
         let items = [...state.items];
         const needId = action.id;
         console.log(needId);
@@ -66,8 +66,8 @@ export default function check(state = initialState, action) {
           }
           return el;
         });
-         return { items: items , selectAll: true}
-      }
+         return { items: items , selectAll: false}
+      
         
       
     default:

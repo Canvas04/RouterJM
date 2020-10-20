@@ -52,23 +52,33 @@ export default function check(state = initialState, action) {
       }
 
     case "PRESS_ONE":
-      
+      let items = [...state.items];
+      const needId = action.id;
+      items = items.map((el) => {
+        if (el.id === 1) {
+          el.checked = false;
+        }
+        if (el.id === needId) {
+          el.checked = !el.checked;
+        }
+        return el;
+      });
+      if (!state.selectAll) {
         let items = [...state.items];
-        const needId = action.id;
-        items = items.map((el) => {
-          if (el.id === 1) {
-            el.checked = false;
-          }
-          if(el.id === needId) {
-            el.checked = !el.checked
-          }
-          return el;
-        });
-        if(state.selectAll) {}
-         return { items: items , selectAll: false}
-      
-        
-      
+        let resItems = [...state.items];
+        items = items.filter((el) => el.id !== 1);
+        const arrWithOnlyTrue = items.map((el) => el.checked);
+        if (!arrWithOnlyTrue.includes(false)) {
+          resItems = resItems.map(el => {
+            if(el.id === 1) {
+              el.checked = true
+            }
+            return el;
+          })
+        }
+      }
+      return { items: items, selectAll: false };
+
     default:
       return state;
   }

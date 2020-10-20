@@ -76,6 +76,7 @@ export default function check(state = initialState, action) {
             return el;
           })
         }
+        return {items: resItems,selectAll: true}
       }
       return { items: items, selectAll: false };
 

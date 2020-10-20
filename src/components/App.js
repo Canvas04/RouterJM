@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import { pressOne } from "../action";
 
 const App = ({ stateCheck, pressAll ,pressOne}) => {
-  console.log(stateCheck);
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <Checkbox

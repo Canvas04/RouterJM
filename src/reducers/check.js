@@ -55,8 +55,6 @@ export default function check(state = initialState, action) {
       
         let items = [...state.items];
         const needId = action.id;
-        console.log(needId);
-        console.log(state);
         items = items.map((el) => {
           if (el.id === 1) {
             el.checked = false;
@@ -66,6 +64,7 @@ export default function check(state = initialState, action) {
           }
           return el;
         });
+        if(state.selectAll) {}
          return { items: items , selectAll: false}
       
         

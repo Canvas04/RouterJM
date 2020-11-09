@@ -25,6 +25,7 @@
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix --color",
     "format": "prettier — write src/**/*.js",
+    "precommit": "lint-staged",
     "prettier": "prettier --single-quote --use-tabs --trailing-comma es5 --write \"src/**/*.js\""
   },
   "eslintConfig": {
@@ -62,10 +63,12 @@
       "pre-commit": "lint-staged"
     }
   },
-  "lint-staged": {
-    ".js": [
-      "npm run lint:fix",
+  "lint-staged":{
+    "*.{js, jsx}": [
+      "node_modules/.bin/eslint --max-warnings=0",
+      "prettier --write",
       "git add"
     ]
   }
+  
 }

@@ -5,10 +5,12 @@ import styled from 'styled-components'
 import { loadArticles } from '../../redux/req-articles/action'
 import Registration from '../registration/registration'
 import './articles.scss'
+import ArticlesList from '../artical-list/articles-list'
 
-const WrapperForPagination = styled.div`
+const WrapperForAlignment = styled.div`
   display: flex;
-  justify-content: center;
+  flex-flow: column;
+  align-items: center;
 `
 
 export default () => {
@@ -24,9 +26,11 @@ export default () => {
   return (
     <>
       <Registration />
-      <WrapperForPagination>
+
+      <WrapperForAlignment>
+        <ArticlesList />
         <Pagination size={'small'} total={50} onChange={onChangeHandler} />
-      </WrapperForPagination>
+      </WrapperForAlignment>
     </>
   )
 }

@@ -3,14 +3,13 @@ import styled from 'styled-components'
 
 const RegistrationContainer = styled.header`
   background-color: #fff;
-  padding: 22px 9px 22px 15px;
+  padding: 9px 22px 15px 22px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `
 const NameOfPage = styled.span`
   font-size: 18px;
-  position: relative;
-  top: 6px;
 `
 const SignIn = styled.button`
   background: none;

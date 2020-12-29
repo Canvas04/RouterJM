@@ -1,42 +1,56 @@
 import React from 'react'
 import styled from 'styled-components'
 import likeImage from './like.svg'
-import profileImg from './avatar.svg'
+import { useSelector } from 'react-redux'
 
 export default () => {
-  const articlesItem = [1, 2, 3, 4, 5].map((el) => {
-    return (
-      <LiComponent key={el}>
-        <WrapperComponent>
-          <Header>Some article title</Header>
-          <LikeComponent>
-            <img height="14px" src={likeImage} />
-            <QuantityLikes>12</QuantityLikes>
-          </LikeComponent>
-          <ProfileImgWrapper>
-            <img src={profileImg} width="46px" height="46px" />
-          </ProfileImgWrapper>
+  const articles = useSelector((store) => store.loadArticles.articles.articles)
+  console.log('🚀 ~ file: articles-list.js ~ line 9 ~ articles ', articles)
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }
+ 
+  if (articles) {
+    const articlesItem = articles.map((el) => {
+       const date = new Date(el.createdAt)
 
-          <NameComponent>John Doe</NameComponent>
-          <DateComponent>March 5 , 2020</DateComponent>
-          <GenreArticle>
-            <WrapperForGenreArticle>Tag1</WrapperForGenreArticle>
-          </GenreArticle>
-          <ContainerForText>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. <br />Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor
-          </ContainerForText>
-        </WrapperComponent>
-      </LiComponent>
+      return (
+        <LiComponent key={el.slug}>
+          <WrapperComponent>
+            <Header>{el.title}</Header>
+            <LikeComponent>
+              <img height="14px" src={likeImage} />
+              <QuantityLikes>{el.favoritesCount}</QuantityLikes>
+            </LikeComponent>
+            <ProfileImgWrapper>
+              <img src={el.author.image} width="46px" height="46px" />
+            </ProfileImgWrapper>
+            {el.tagList.map((el) => {
+              return (
+                <GenreArticle key={el}>
+                  <WrapperForGenreArticle>Tag1</WrapperForGenreArticle>
+                </GenreArticle>
+              )
+            })}
+            <NameComponent>{el.author.username}</NameComponent>
+            <DateComponent>{date.toLocaleString('en-US',options)}</DateComponent>
+
+            <ContainerForText>{el.description}</ContainerForText>
+          </WrapperComponent>
+        </LiComponent>
+      )
+    })
+
+    return (
+      <>
+        <UlComponent>{articlesItem}</UlComponent>
+      </>
     )
-  })
-  return (
-    <>
-      <UlComponent>{articlesItem}</UlComponent>
-    </>
-  )
+  }
+
+  return <></>
 }
 
 const UlComponent = styled.ul`
@@ -47,6 +61,7 @@ const UlComponent = styled.ul`
   display: grid;
   grid-template-rows: repeat(5, 1fr);
   grid-row-gap: 26px;
+  max-width: 1100px;
 `
 const LiComponent = styled.li`
   padding: 15px 14px 24px 19px;
@@ -57,7 +72,7 @@ const WrapperComponent = styled.div`
   display: grid;
   grid-template-columns: 1fr 4fr 1fr 0.1fr;
   grid-column-gap: 12px;
-  grid-template-rows: repeat(4, 22px);
+  grid-template-rows: repeat(3, 22px);
   grid-row-gap: 5px;
 `
 const Header = styled.h2`
@@ -114,18 +129,17 @@ const GenreArticle = styled.div`
   line-height: 15px;
   color: rgba(0, 0, 0, 0.5);
 `
-// Надо поместить жанры еще один контейнер , чтобы уменьшить границу
 const WrapperForGenreArticle = styled.span`
   border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 2px;
   padding: 2px;
 `
 const ContainerForText = styled.div`
-grid-column:1/3;
-grid-row:3/5;
-font-style: normal;
-font-weight: normal;
-font-size: 12px;
-line-height: 22px;
-color: rgba(0, 0, 0, 0.75);
+  grid-column: 1/3;
+  grid-row: 3/5;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 22px;
+  color: rgba(0, 0, 0, 0.75);
 `

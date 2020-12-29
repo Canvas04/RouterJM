@@ -1,4 +1,4 @@
 import { combineReducers } from 'redux'
-import loadTickets from './req-articles/req-articles'
+import loadArticles from './req-articles/req-articles'
 
-export default combineReducers({ loadTickets })
+export default combineReducers({ loadArticles })

@@ -19,7 +19,15 @@ export default () => {
 
           <NameComponent>John Doe</NameComponent>
           <DateComponent>March 5 , 2020</DateComponent>
-          <GenreArticle>Tag1</GenreArticle>
+          <GenreArticle>
+            <WrapperForGenreArticle>Tag1</WrapperForGenreArticle>
+          </GenreArticle>
+          <ContainerForText>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. <br />Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor
+          </ContainerForText>
         </WrapperComponent>
       </LiComponent>
     )
@@ -49,7 +57,7 @@ const WrapperComponent = styled.div`
   display: grid;
   grid-template-columns: 1fr 4fr 1fr 0.1fr;
   grid-column-gap: 12px;
-  grid-template-rows: repeat(3, 22px);
+  grid-template-rows: repeat(4, 22px);
   grid-row-gap: 5px;
 `
 const Header = styled.h2`
@@ -101,11 +109,23 @@ const DateComponent = styled.span`
 `
 const GenreArticle = styled.div`
   font-style: normal;
-  font-weight: normal;
+  font-weight: 400;
   font-size: 12px;
   line-height: 15px;
   color: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 2px;
 `
 // Надо поместить жанры еще один контейнер , чтобы уменьшить границу
+const WrapperForGenreArticle = styled.span`
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 2px;
+  padding: 2px;
+`
+const ContainerForText = styled.div`
+grid-column:1/3;
+grid-row:3/5;
+font-style: normal;
+font-weight: normal;
+font-size: 12px;
+line-height: 22px;
+color: rgba(0, 0, 0, 0.75);
+`

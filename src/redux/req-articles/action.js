@@ -27,11 +27,11 @@ const errorLoadArticles = (error) => {
   }
 }
 
-export const loadArticles = () => {
+export const loadArticles = (page) => {
   return async (dispatch) => {
     dispatch(requestArticles())
     try {
-      const loadedArticles = await fetch(`${url}articles?limit=5`, {
+      const loadedArticles = await fetch(`${url}articles?offset=${page}&limit=5`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json;charset=utf-8',

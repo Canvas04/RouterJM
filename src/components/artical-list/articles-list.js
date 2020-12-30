@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux'
 
 export default () => {
   const articles = useSelector((store) => store.loadArticles.articles.articles)
-  console.log('🚀 ~ file: articles-list.js ~ line 9 ~ articles ', articles)
   const options = {
     year: 'numeric',
     month: 'long',

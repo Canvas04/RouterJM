@@ -6,7 +6,7 @@ import LinearProgress from '@material-ui/core/LinearProgress'
 import likeImage from './like.svg'
 import { Pagination } from 'antd'
 import { loadArticles } from '../../redux/req-articles/action'
-
+import ErrorBoundary from '../error-boundary/error-boundary'
 export default () => {
   const articles = useSelector((store) => store.loadArticles.articles.articles)
   const options = {
@@ -28,7 +28,9 @@ export default () => {
               <QuantityLikes>{el.favoritesCount}</QuantityLikes>
             </LikeComponent>
             <ProfileImgWrapper>
-              <img src={el.author.image} width="46px" height="46px" />
+              <ErrorBoundary type='img'>
+                <img src={el.author.image} width="46px" height="46px" />
+              </ErrorBoundary>
             </ProfileImgWrapper>
             {el.tagList.map((el) => {
               return (

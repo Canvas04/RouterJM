@@ -1,7 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useDispatch, useSelector } from 'react-redux'
+import { makeStyles } from '@material-ui/core/styles'
+import LinearProgress from '@material-ui/core/LinearProgress'
 import likeImage from './like.svg'
-import { useSelector } from 'react-redux'
+import { Pagination } from 'antd'
+import { loadArticles } from '../../redux/req-articles/action'
 
 export default () => {
   const articles = useSelector((store) => store.loadArticles.articles.articles)
@@ -10,10 +14,10 @@ export default () => {
     month: 'long',
     day: 'numeric',
   }
- 
+
   if (articles) {
     const articlesItem = articles.map((el) => {
-       const date = new Date(el.createdAt)
+      const date = new Date(el.createdAt)
 
       return (
         <LiComponent key={el.slug}>
@@ -34,7 +38,9 @@ export default () => {
               )
             })}
             <NameComponent>{el.author.username}</NameComponent>
-            <DateComponent>{date.toLocaleString('en-US',options)}</DateComponent>
+            <DateComponent>
+              {date.toLocaleString('en-US', options)}
+            </DateComponent>
 
             <ContainerForText>{el.description}</ContainerForText>
           </WrapperComponent>
@@ -142,3 +148,11 @@ const ContainerForText = styled.div`
   line-height: 22px;
   color: rgba(0, 0, 0, 0.75);
 `
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}))

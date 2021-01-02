@@ -1,22 +1,17 @@
 import { Pagination } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { makeStyles } from '@material-ui/core/styles'
+import LinearProgress from '@material-ui/core/LinearProgress'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { loadArticles } from '../../redux/req-articles/action'
 import Registration from '../registration/registration'
 import './articles.scss'
 import ArticlesList from '../artical-list/articles-list'
 
-const WrapperForAlignment = styled.div`
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-`
-
 export default () => {
-  const [counter, setCounter] = useState(0)
-  // console.log("🚀 ~ file: articles.js ~ line 18 ~ counter", counter)
-
+  const isFetching = useSelector((store) => store.loadArticles.isFetching)
+  const classes = useStyles()
   const dispatch = useDispatch()
   const onChangeHandler = (currentPage) => {
     let queryForRequest = 0
@@ -26,20 +21,38 @@ export default () => {
 
     dispatch(loadArticles(queryForRequest))
   }
-
-  useEffect(() => {
-    dispatch(loadArticles())
-    return () => dispatch(loadArticles())
-  })
-
   return (
     <>
       <Registration />
-
       <WrapperForAlignment>
-        <ArticlesList />
-        <Pagination size={'small'} total={50} onChange={onChangeHandler} />
+        {isFetching ? (
+          <div className={classes.root}>
+            <LinearProgress color="secondary" />
+          </div>
+        ) : (
+          <ArticlesList />
+        )}
+
+        <PaginationWrapper isFetching={isFetching}>
+          <Pagination size={'small'} total={50} onChange={onChangeHandler} />
+        </PaginationWrapper>
       </WrapperForAlignment>
     </>
   )
 }
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}))
+const PaginationWrapper = styled.div`
+  display: ${(props) => (props.isFetching ? 'none' : 'block')};
+`
+const WrapperForAlignment = styled.div`
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+`

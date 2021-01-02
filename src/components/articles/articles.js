@@ -8,9 +8,10 @@ import { loadArticles } from '../../redux/req-articles/action'
 import Registration from '../registration/registration'
 import './articles.scss'
 import ArticlesList from '../artical-list/articles-list'
-
+import ErrorBoundary from '../error-boundary/error-boundary'
 export default () => {
   const isFetching = useSelector((store) => store.loadArticles.isFetching)
+  const isError = useSelector(store => store.loadArticles.isError)
   const classes = useStyles()
   const dispatch = useDispatch()
   const onChangeHandler = (currentPage) => {
@@ -25,7 +26,8 @@ export default () => {
     <>
       <Registration />
       <WrapperForAlignment>
-        {isFetching ? (
+        <ErrorBoundary type='common' isErrorDurationLoading={isError}>
+            {isFetching ? (
           <div className={classes.root}>
             <LinearProgress color="secondary" />
           </div>
@@ -36,6 +38,8 @@ export default () => {
         <PaginationWrapper isFetching={isFetching}>
           <Pagination size={'small'} total={50} onChange={onChangeHandler} />
         </PaginationWrapper>
+        </ErrorBoundary>
+      
       </WrapperForAlignment>
     </>
   )

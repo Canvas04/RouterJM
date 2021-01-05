@@ -7,6 +7,7 @@ import likeImage from './like.svg'
 import { Pagination } from 'antd'
 import { loadArticles } from '../../redux/req-articles/action'
 import ErrorBoundary from '../error-boundary/error-boundary'
+import { Link, Route, Switch } from 'react-router-dom'
 export default () => {
   const articles = useSelector((store) => store.loadArticles.articles.articles)
   const options = {
@@ -18,34 +19,46 @@ export default () => {
   if (articles) {
     const articlesItem = articles.map((el) => {
       const date = new Date(el.createdAt)
-
+      const path = el.slug
       return (
         <LiComponent key={el.slug}>
-          <WrapperComponent>
-            <Header>{el.title}</Header>
-            <LikeComponent>
-              <img height="14px" src={likeImage} />
-              <QuantityLikes>{el.favoritesCount}</QuantityLikes>
-            </LikeComponent>
-            <ProfileImgWrapper>
-              <ErrorBoundary type='img'>
-                <img src={el.author.image} width="46px" height="46px" />
-              </ErrorBoundary>
-            </ProfileImgWrapper>
-            {el.tagList.map((el) => {
-              return (
-                <GenreArticle key={el}>
-                  <WrapperForGenreArticle>Tag1</WrapperForGenreArticle>
-                </GenreArticle>
-              )
-            })}
-            <NameComponent>{el.author.username}</NameComponent>
-            <DateComponent>
-              {date.toLocaleString('en-US', options)}
-            </DateComponent>
+          <Link
+            key={el.slug}
+            to={{
+              pathname: `/articles/:${path}`,
+            }}
+          >
+            <WrapperComponent>
+              <Header>{el.title}</Header>
+              <LikeComponent>
+                <img height="14px" src={likeImage} />
+                <QuantityLikes>{el.favoritesCount}</QuantityLikes>
+              </LikeComponent>
+              <ProfileImgWrapper>
+                <ErrorBoundary type="img">
+                  <img
+                    src={el.author.image}
+                    width="46px"
+                    height="46px"
+                    alt="author"
+                  />
+                </ErrorBoundary>
+              </ProfileImgWrapper>
+              {el.tagList.map((el) => {
+                return (
+                  <GenreArticle key={el}>
+                    <WrapperForGenreArticle>{el}</WrapperForGenreArticle>
+                  </GenreArticle>
+                )
+              })}
+              <NameComponent>{el.author.username}</NameComponent>
+              <DateComponent>
+                {date.toLocaleString('en-US', options)}
+              </DateComponent>
 
-            <ContainerForText>{el.description}</ContainerForText>
-          </WrapperComponent>
+              <ContainerForText>{el.description}</ContainerForText>
+            </WrapperComponent>
+          </Link>
         </LiComponent>
       )
     })

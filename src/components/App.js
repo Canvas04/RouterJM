@@ -7,6 +7,7 @@ import { loadArticles } from '../redux/req-articles/action'
 import { useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import FullArticle from './full-article/full-artilce'
+
 export default function App() {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -27,6 +28,7 @@ export default function App() {
           }}
         />
       </Switch>
+
     </>
   )
 }

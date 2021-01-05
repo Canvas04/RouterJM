@@ -36,7 +36,7 @@ export default () => {
         )}
 
         <PaginationWrapper isFetching={isFetching}>
-          <Pagination size={'small'} total={50} onChange={onChangeHandler} />
+          <Pagination size={'small'} total={100} onChange={onChangeHandler} />
         </PaginationWrapper>
         </ErrorBoundary>
       
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 const PaginationWrapper = styled.div`
   display: ${(props) => (props.isFetching ? 'none' : 'block')};
 `
-const WrapperForAlignment = styled.div`
+ const WrapperForAlignment = styled.div`
   display: flex;
   flex-flow: column;
   align-items: center;

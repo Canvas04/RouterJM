@@ -3,11 +3,13 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
 import reduxThunk from 'redux-thunk'
+import { createHashHistory} from 'history'
 import App from './components/App'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route ,useHistory} from 'react-router-dom'
 import rootReducer from './redux/reducer'
 import './fonts/font.scss'
-
+import { Switch } from 'react-router-dom'
+import Articles from './components/articles/articles'
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
@@ -17,12 +19,14 @@ const store = createStore(
   rootReducer,
   composeEnhancers(applyMiddleware( reduxThunk))
 )
-
+const customHistory = createHashHistory()
 render(
   <Provider store={store}>
-    <Router>
-      <App />
+    <Router history={customHistory}>
+       <App />
+       
     </Router>
+     
   </Provider>,
   document.getElementById('root')
 )

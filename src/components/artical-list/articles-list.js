@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
@@ -7,6 +7,8 @@ import likeImage from './like.svg'
 import { Pagination } from 'antd'
 import { loadArticles } from '../../redux/req-articles/action'
 import ErrorBoundary from '../error-boundary/error-boundary'
+import pressedLike from './pressed-like.svg'
+import defaultAvatar from './avatar.svg'
 import { Link, Route, Switch } from 'react-router-dom'
 export default () => {
   const articles = useSelector((store) => store.loadArticles.articles.articles)
@@ -18,48 +20,73 @@ export default () => {
 
   if (articles) {
     const articlesItem = articles.map((el) => {
+      let authorImage
+      if (el.author.image) {
+        authorImage = el.author.image
+      }else {
+        authorImage = defaultAvatar
+      }
+
+      const [likedQ, setLikedQ] = useState(false)
+      const [uri, setUri] = useState(likeImage)
+      const onButtonClickHandler = () => {
+        setLikedQ(!likedQ)
+        if (likedQ) {
+          setUri(pressedLike)
+        } else {
+          setUri(likeImage)
+        }
+      }
       const date = new Date(el.createdAt)
       const path = el.slug
       return (
         <LiComponent key={el.slug}>
-          <Link
-            key={el.slug}
-            to={{
-              pathname: `/articles/:${path}`,
-            }}
-          >
-            <WrapperComponent>
-              <Header>
+          <WrapperComponent>
+            <Header>
+              <Link
+                key={el.slug}
+                to={{
+                  pathname: `/articles/:${path}`,
+                }}
+              >
+                {' '}
                 {el.title}
-                <LikeComponent>
-                  <img height="14px" src={likeImage} />
-                  <QuantityLikes>{el.favoritesCount}</QuantityLikes>
-                </LikeComponent>
-              </Header>
+              </Link>
+              <LikeComponent>
+                <ButtonLike onClick={onButtonClickHandler}>
+                  <img height="14px" src={uri} alt="like" />
+                </ButtonLike>
 
-              <ProfileImgWrapper>
-                <ErrorBoundary type="img">
-                  <img
-                    src={el.author.image}
-                    width="46px"
-                    height="46px"
-                    alt="author"
-                  />
-                </ErrorBoundary>
-              </ProfileImgWrapper>
-              <GenreArticle isTaglist={el.tagList.length}>
-                {el.tagList.map((el) => {
-                  return <WrapperForGenreArticle>{el}</WrapperForGenreArticle>
-                })}
-              </GenreArticle>
-              <NameComponent>{el.author.username}</NameComponent>
-              <DateComponent>
-                {date.toLocaleString('en-US', options)}
-              </DateComponent>
+                <QuantityLikes>{el.favoritesCount}</QuantityLikes>
+              </LikeComponent>
+            </Header>
 
-              <ContainerForText>{el.description}</ContainerForText>
-            </WrapperComponent>
-          </Link>
+            <ProfileImgWrapper>
+              <ErrorBoundary type="img">
+                <img
+                  src={authorImage}
+                  width="46px"
+                  height="46px"
+                  alt="author"
+                />
+              </ErrorBoundary>
+            </ProfileImgWrapper>
+            <GenreArticle isTaglist={el.tagList.length}>
+              {el.tagList.map((el, i) => {
+                return (
+                  <WrapperForGenreArticle index={i}>
+                    {el}
+                  </WrapperForGenreArticle>
+                )
+              })}
+            </GenreArticle>
+            <NameComponent>{el.author.username}</NameComponent>
+            <DateComponent>
+              {date.toLocaleString('en-US', options)}
+            </DateComponent>
+
+            <ContainerForText>{el.description}</ContainerForText>
+          </WrapperComponent>
         </LiComponent>
       )
     })
@@ -158,16 +185,13 @@ const GenreArticle = styled.div`
   color: rgba(0, 0, 0, 0.5);
   grid-row: 2/3;
   grid-column: 1/3;
-  display: grid;
-  grid-template-columns: repeat(15, 1fr);
-  column-gap: 10px;
-  grid-template-rows: repeat(2, 20px);
-  display: ${props => props.isTaglist > 0 ? 'flex': 'none'};
+  display: ${(props) => (props.isTaglist > 0 ? 'flex' : 'none')};
 `
 const WrapperForGenreArticle = styled.span`
   border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 2px;
   padding: 2px;
+  margin-left: ${(props) => (props.index === 0 ? '0' : '5px')};
 `
 const ContainerForText = styled.div`
   grid-column: 1/3;
@@ -176,6 +200,8 @@ const ContainerForText = styled.div`
   font-size: 12px;
   line-height: 22px;
   color: rgba(0, 0, 0, 0.75);
+  position: relative;
+  top: -5px;
 `
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -185,3 +211,15 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }))
+
+const ButtonLike = styled.button`
+  border: 0;
+  background: none;
+  outline: none;
+  margin: 0;
+  padding: 0;
+  &:focus {
+    outline: none;
+  }
+  cursor: pointer;
+`

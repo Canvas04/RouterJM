@@ -13,7 +13,6 @@ export default ({ id }) => {
     month: 'long',
     day: 'numeric',
   }
-  console.log('🚀 ~ file: full-artilce.js ~ line 12 ~ articles', articles)
   const onButtonClickHandler = () => {
     setLikedQ(!likedQ)
     if (likedQ) {
@@ -57,9 +56,9 @@ export default ({ id }) => {
           </NameComponent>
           <DateComponent children={formattedDate} />
           <GenreArticle isTaglist={el.tagList.length}>
-            {el.tagList.map((el) => {
+            {el.tagList.map((el,i) => {
               return (
-                <WrapperForGenreArticle key={el}>{el}</WrapperForGenreArticle>
+                <WrapperForGenreArticle key={el} index={i}>{el}</WrapperForGenreArticle>
               )
             })}
           </GenreArticle>
@@ -82,7 +81,7 @@ const WrapperForArticle = styled.div`
   display: grid;
   grid-template-columns: 1fr 4fr 1fr 0.1fr;
   grid-column-gap: 12px;
-  grid-template-rows: repeat(20, 1fr);
+  grid-template-rows: repeat(20, 20px);
   flex-basis: 80%;
   filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.15));
   margin-top: 20px;
@@ -90,6 +89,7 @@ const WrapperForArticle = styled.div`
   padding-top: 17px;
   padding-right: 14px;
   padding-left: 16px;
+  row-gap:5px;
 `
 const Header = styled(Markdown)`
   color: #1890ff;
@@ -156,16 +156,13 @@ const GenreArticle = styled.div`
   color: rgba(0, 0, 0, 0.5);
   grid-row: 2/3;
   grid-column: 1/3;
-  display: grid;
-  grid-template-columns: repeat(15,1fr);
-  column-gap: 10px;
-  grid-template-rows: repeat(2,20px);
-  display: ${props => props.isTaglist > 0 ? 'grid': 'none'};
+  display: ${props => props.isTaglist > 0 ? 'flex': 'none'};
 `
 const WrapperForGenreArticle = styled.span`
   border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 2px;
   padding: 2px;
+  margin-left: ${props => props.index === 0 ? '0' : '5px'};
 `
 const ContainerForText = styled(Markdown)`
   grid-column: 1/3;
@@ -174,6 +171,8 @@ const ContainerForText = styled(Markdown)`
   font-size: 12px;
   line-height: 22px;
   color: rgba(0, 0, 0, 0.75);
+  position:relative;
+  top:-5px;
 `
 const LikeComponent = styled.div``
 const QuantityLikes = styled(Markdown)``

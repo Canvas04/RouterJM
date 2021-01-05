@@ -56,7 +56,7 @@ export default ({ id }) => {
             {el.author.username}
           </NameComponent>
           <DateComponent children={formattedDate} />
-          <GenreArticle>
+          <GenreArticle isTaglist={el.tagList.length}>
             {el.tagList.map((el) => {
               return (
                 <WrapperForGenreArticle key={el}>{el}</WrapperForGenreArticle>
@@ -160,7 +160,7 @@ const GenreArticle = styled.div`
   grid-template-columns: repeat(15,1fr);
   column-gap: 10px;
   grid-template-rows: repeat(2,20px);
-
+  display: ${props => props.isTaglist > 0 ? 'grid': 'none'};
 `
 const WrapperForGenreArticle = styled.span`
   border: 1px solid rgba(0, 0, 0, 0.5);
@@ -169,7 +169,6 @@ const WrapperForGenreArticle = styled.span`
 `
 const ContainerForText = styled(Markdown)`
   grid-column: 1/3;
-  grid-row: 3/5;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;

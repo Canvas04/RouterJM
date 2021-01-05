@@ -29,11 +29,14 @@ export default () => {
             }}
           >
             <WrapperComponent>
-              <Header>{el.title}</Header>
-              <LikeComponent>
-                <img height="14px" src={likeImage} />
-                <QuantityLikes>{el.favoritesCount}</QuantityLikes>
-              </LikeComponent>
+              <Header>
+                {el.title}
+                <LikeComponent>
+                  <img height="14px" src={likeImage} />
+                  <QuantityLikes>{el.favoritesCount}</QuantityLikes>
+                </LikeComponent>
+              </Header>
+
               <ProfileImgWrapper>
                 <ErrorBoundary type="img">
                   <img
@@ -44,13 +47,11 @@ export default () => {
                   />
                 </ErrorBoundary>
               </ProfileImgWrapper>
-              {el.tagList.map((el) => {
-                return (
-                  <GenreArticle key={el}>
-                    <WrapperForGenreArticle>{el}</WrapperForGenreArticle>
-                  </GenreArticle>
-                )
-              })}
+              <GenreArticle isTaglist={el.tagList.length}>
+                {el.tagList.map((el) => {
+                  return <WrapperForGenreArticle>{el}</WrapperForGenreArticle>
+                })}
+              </GenreArticle>
               <NameComponent>{el.author.username}</NameComponent>
               <DateComponent>
                 {date.toLocaleString('en-US', options)}
@@ -90,7 +91,7 @@ const LiComponent = styled.li`
 `
 const WrapperComponent = styled.div`
   display: grid;
-  grid-template-columns: 1fr 4fr 1fr 0.1fr;
+  grid-template-columns: 8fr 1fr 1fr 0.1fr;
   grid-column-gap: 12px;
   grid-template-rows: repeat(3, 22px);
   grid-row-gap: 5px;
@@ -100,14 +101,21 @@ const Header = styled.h2`
   font-weight: normal;
   font-size: 20px;
   line-height: 28px;
+  display: flex;
 `
 const LikeComponent = styled.div`
-  position: relative;
-  top: 3px;
+  margin-left: 13px;
 `
 
 const QuantityLikes = styled.span`
   margin-left: 5px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 22px;
+  color: rgba(0, 0, 0, 0.75);
+  position: relative;
+  top: -3px;
 `
 
 const ProfileImgWrapper = styled.div`
@@ -148,6 +156,13 @@ const GenreArticle = styled.div`
   font-size: 12px;
   line-height: 15px;
   color: rgba(0, 0, 0, 0.5);
+  grid-row: 2/3;
+  grid-column: 1/3;
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  column-gap: 10px;
+  grid-template-rows: repeat(2, 20px);
+  display: ${props => props.isTaglist > 0 ? 'flex': 'none'};
 `
 const WrapperForGenreArticle = styled.span`
   border: 1px solid rgba(0, 0, 0, 0.5);
@@ -156,7 +171,6 @@ const WrapperForGenreArticle = styled.span`
 `
 const ContainerForText = styled.div`
   grid-column: 1/3;
-  grid-row: 3/5;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;

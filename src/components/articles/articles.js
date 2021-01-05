@@ -9,9 +9,10 @@ import Registration from '../registration/registration'
 import './articles.scss'
 import ArticlesList from '../artical-list/articles-list'
 import ErrorBoundary from '../error-boundary/error-boundary'
+import { Link } from 'react-router-dom'
 export default () => {
   const isFetching = useSelector((store) => store.loadArticles.isFetching)
-  const isError = useSelector(store => store.loadArticles.isError)
+  const isError = useSelector((store) => store.loadArticles.isError)
   const classes = useStyles()
   const dispatch = useDispatch()
   const onChangeHandler = (currentPage) => {
@@ -19,27 +20,30 @@ export default () => {
     for (let i = 0; i < currentPage; i++) {
       queryForRequest += 5
     }
-
     dispatch(loadArticles(queryForRequest))
   }
+  
   return (
     <>
       <Registration />
       <WrapperForAlignment>
-        <ErrorBoundary type='common' isErrorDurationLoading={isError}>
-            {isFetching ? (
-          <div className={classes.root}>
-            <LinearProgress color="secondary" />
-          </div>
-        ) : (
-          <ArticlesList />
-        )}
+        <ErrorBoundary type="common" isErrorDurationLoading={isError}>
+          {isFetching ? (
+            <div className={classes.root}>
+              <LinearProgress color="secondary" />
+            </div>
+          ) : (
+            <ArticlesList />
+          )}
 
-        <PaginationWrapper isFetching={isFetching}>
-          <Pagination size={'small'} total={100} onChange={onChangeHandler} />
-        </PaginationWrapper>
+          <PaginationWrapper isFetching={isFetching}>
+            <Pagination
+              size={'small'}
+              total={200}
+              onChange={onChangeHandler}
+            />
+          </PaginationWrapper>
         </ErrorBoundary>
-      
       </WrapperForAlignment>
     </>
   )
@@ -55,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 const PaginationWrapper = styled.div`
   display: ${(props) => (props.isFetching ? 'none' : 'block')};
 `
- const WrapperForAlignment = styled.div`
+const WrapperForAlignment = styled.div`
   display: flex;
   flex-flow: column;
   align-items: center;

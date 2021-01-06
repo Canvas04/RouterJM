@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Registration from '../registration/registration'
 
 export default () => {
+  const ref = useRef()
+
   return (
     <>
       <Registration />
@@ -12,7 +14,7 @@ export default () => {
           <Header>Create new account</Header>
           <Label label="username">
             <NameField>Username</NameField>
-            <Input type="text" placeholder="Username" />
+            <Input type="text" placeholder="Username" autoFocus/>
           </Label>
           <Label>
             <NameField>Email adress</NameField>
@@ -116,6 +118,7 @@ const Checkbox = styled.input`
 const AgreementLabel = styled.label`
   position: relative;
   left: 8px;
+  margin: 0;
 `
 const FormWrapper = styled.div`
   display: flex;
@@ -156,9 +159,8 @@ const ContainerForLink = styled.div`
 `
 const StyledLink = styled(Link)`
   color: #1890ff;
-   margin-left:3px;
+  margin-left: 3px;
 `
 const LabelForLink = styled.span`
   color: #8c8c8c;
- 
 `

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import { Link } from 'react-router-dom'
 const RegistrationContainer = styled.header`
   background-color: #fff;
   padding: 9px 22px 15px 22px;
@@ -11,7 +11,7 @@ const RegistrationContainer = styled.header`
 const NameOfPage = styled.span`
   font-size: 18px;
 `
-const SignIn = styled.button`
+const SignIn = styled(Link)`
   background: none;
   border: 1px solid white;
   font-size: 18px;
@@ -21,9 +21,10 @@ const SignIn = styled.button`
   &:hover {
     border: 1px solid rgba(0, 0, 0, 85);
     border-radius: 5px;
+    color: rgba(0, 0, 0, 0.75);
   }
 `
-const SignUp = styled.button`
+const SignUp = styled(Link)`
   background: none;
   color: #52c41a;
   border: 1px solid white;
@@ -33,6 +34,7 @@ const SignUp = styled.button`
   &:hover {
     border: 1px solid #52c41a;
     border-radius: 5px;
+    color: #52c41a;
   }
 `
 const WrapperForButtons = styled.div``
@@ -42,8 +44,8 @@ export default function Registration() {
       <RegistrationContainer>
         <NameOfPage>Realworld Blog</NameOfPage>
         <WrapperForButtons>
-          <SignIn>Sign In</SignIn>
-          <SignUp>Sign Up</SignUp>
+          <SignIn to="/sign-in">Sign In</SignIn>
+          <SignUp to="/sign-up">Sign Up</SignUp>
         </WrapperForButtons>
       </RegistrationContainer>
     </>

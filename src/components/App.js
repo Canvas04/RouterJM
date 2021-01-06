@@ -7,6 +7,8 @@ import { loadArticles } from '../redux/req-articles/action'
 import { useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import FullArticle from './full-article/full-artilce'
+import SignUp from './registration-page/registration-page'
+import SignIn from './sign-in/sign-in'
 
 export default function App() {
   const dispatch = useDispatch()
@@ -17,18 +19,19 @@ export default function App() {
   return (
     <>
       <Switch>
-        <Route path="/" exact component={Articles}></Route>
+        {/* <Route path="/" exact component={Articles}></Route> */}
         <Route path="/articles" component={Articles} exact />
         <Route
           path="/articles/:slug"
-          render={({match}) => {
-            const {slug} = match.params
-            
+          render={({ match }) => {
+            const { slug } = match.params
+
             return <FullArticle id={slug} />
           }}
         />
+        <Route path="/" exact component={SignUp} />
+        <Route path="/sign-in" component={SignIn} />
       </Switch>
-
     </>
   )
 }

@@ -1,36 +1,118 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
+import _ from 'lodash/fp'
 import styled from 'styled-components'
 import Registration from '../registration/registration'
-
+import { useForm } from 'react-hook-form'
 export default () => {
-  const ref = useRef()
-
+  const { register, handleSubmit, errors, getValues } = useForm()
+  const onSubmit = (data) => {
+    console.log(data)
+  }
   return (
     <>
       <Registration />
       <FormWrapper>
-        <FormComponent>
+        <FormComponent onSubmit={handleSubmit(onSubmit)}>
           <Header>Create new account</Header>
           <Label label="username">
             <NameField>Username</NameField>
-            <Input type="text" placeholder="Username" autoFocus/>
+            <Input
+              name="username"
+              placeholder="Username"
+              autoFocus
+              ref={register({
+                required: true,
+                maxLength: 20,
+                minLength: 3,
+                pattern: /^[A-Za-z]+$/i,
+              })}
+              className='form-control form-control-sm'
+            />
           </Label>
+          {_.get('username.type', errors) === 'required' && (
+            <WarningLabel>This field is required</WarningLabel>
+          )}
+          {_.get('username.type', errors) === 'maxLength' && (
+            <WarningLabel>Username cannot exceed 20 characters</WarningLabel>
+          )}
+          {_.get('username.type', errors) === 'minLength' && (
+            <WarningLabel>Username must contain at least 3 characters</WarningLabel>
+          )}
+          {_.get('username.type', errors) === 'pattern' && (
+            <WarningLabel>Alphabetical characters only</WarningLabel>
+          )}
+
           <Label>
             <NameField>Email adress</NameField>
-            <Input type="text" placeholder="Email adress" />
+            <Input
+              name="email"
+              placeholder="Email adress"
+              ref={register({
+                required: true,
+                pattern: /.+@.+\..+/i,
+              })}
+              className='form-control form-control-sm'
+            />
           </Label>
+          {_.get('email.type', errors) === 'pattern' && (
+            <WarningLabel>Email is not correct</WarningLabel>
+          )}
+          {_.get('email.type', errors) === 'required' && (
+            <WarningLabel>This field is required</WarningLabel>
+          )}
+
           <Label>
             <NameField>Password</NameField>
-            <Input type="text" placeholder="Password" />
+            <Input
+              name="newPassword"
+              placeholder="Password"
+              ref={register({
+                required: true,
+                minLength: 8,
+                pattern: /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*/,
+              })}
+              error={_.get('newPassword.type', errors) === 'minLength'}
+              className='form-control form-control-sm'
+            />
           </Label>
+          {_.get('newPassword.type', errors) === 'pattern' && (
+            <WarningLabel>
+              Password field: at least one number, one uppercase letter and one
+              lowercase
+            </WarningLabel>
+          )}
+          {_.get('newPassword.type', errors) === 'required' && (
+            <WarningLabel>This field is required</WarningLabel>
+          )}
+          {_.get('newPassword.type', errors) === 'minLength' && (
+            <WarningLabel>Password must contain at least 8 characters</WarningLabel>
+          )}
           <Label>
             <NameField>Repeat Password</NameField>
-            <Input type="text" placeholder="Repeat Password" />
+            <Input
+              name="passwordConfirmation"
+              placeholder="Repeat Password"
+              ref={register({
+                required: 'Please confirm password!',
+                validate: {
+                  matchesPreviousPassword: (value) => {
+                    const { newPassword } = getValues()
+                    return newPassword === value || 'Passwords must match'
+                  },
+                },
+              })}
+              error={errors.passwordConfirmation}
+              className='form-control form-control-sm'
+            />
           </Label>
+          {errors.passwordConfirmation && (
+            <WarningLabel>{errors.passwordConfirmation.message}</WarningLabel>
+          )}
+
           <Divider />
           <AgreementContainer>
-            <Checkbox id="check" type="checkbox" />
+            <Checkbox id="check" type="checkbox" required />
             <AgreementLabel htmlFor="check">
               I agree to the processing of my personal information
             </AgreementLabel>
@@ -47,7 +129,6 @@ export default () => {
 }
 const FormComponent = styled.form`
   max-width: 384px;
-  max-height: 599px;
   display: flex;
   flex-direction: column;
   padding: 36.5px 48px;
@@ -96,6 +177,8 @@ const Input = styled.input`
   padding-top: 8px;
   padding-right: 12px;
   padding-bottom: 8px;
+
+  border-color: ${(props) => (props.error ? 'red' : '#d9d9d9')};
 `
 const Divider = styled.hr`
   height: 1px;
@@ -163,4 +246,9 @@ const StyledLink = styled(Link)`
 `
 const LabelForLink = styled.span`
   color: #8c8c8c;
+`
+const WarningLabel = styled.p`
+  color: #f5222d;
+  margin-bottom: 12px;
+  margin-top:-12px;
 `

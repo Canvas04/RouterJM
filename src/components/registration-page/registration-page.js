@@ -4,11 +4,26 @@ import _ from 'lodash/fp'
 import styled from 'styled-components'
 import Registration from '../registration/registration'
 import { useForm } from 'react-hook-form'
+import sign_up from '../../redux/sign-up/sign-up-action'
+import { useDispatch, useSelector } from 'react-redux'
 export default () => {
   const { register, handleSubmit, errors, getValues } = useForm()
+  const dispatch = useDispatch()
   const onSubmit = (data) => {
-    console.log(data)
+    const { username, email, newPassword: password } = data
+    const objForRegistration = {
+      user: {
+        username,
+        email,
+        password,
+      },
+    }
+    dispatch(sign_up(JSON.stringify(objForRegistration)))
   }
+  // здесь содержится инфа о ошибках , ее надо правильно отобразить и вывести инфу об ошибках
+  const repeatedEmailAndUsername = useSelector((store) => store.sign_up)
+  const { email, username } = repeatedEmailAndUsername
+  console.log(email, username)
   return (
     <>
       <Registration />
@@ -27,7 +42,7 @@ export default () => {
                 minLength: 3,
                 pattern: /^[A-Za-z]+$/i,
               })}
-              className='form-control form-control-sm'
+              className="form-control form-control-sm"
             />
           </Label>
           {_.get('username.type', errors) === 'required' && (
@@ -37,12 +52,14 @@ export default () => {
             <WarningLabel>Username cannot exceed 20 characters</WarningLabel>
           )}
           {_.get('username.type', errors) === 'minLength' && (
-            <WarningLabel>Username must contain at least 3 characters</WarningLabel>
+            <WarningLabel>
+              Username must contain at least 3 characters
+            </WarningLabel>
           )}
           {_.get('username.type', errors) === 'pattern' && (
             <WarningLabel>Alphabetical characters only</WarningLabel>
           )}
-
+          {username && <WarningLabel>Username {username.join()}</WarningLabel>}
           <Label>
             <NameField>Email adress</NameField>
             <Input
@@ -52,7 +69,7 @@ export default () => {
                 required: true,
                 pattern: /.+@.+\..+/i,
               })}
-              className='form-control form-control-sm'
+              className="form-control form-control-sm"
             />
           </Label>
           {_.get('email.type', errors) === 'pattern' && (
@@ -61,7 +78,7 @@ export default () => {
           {_.get('email.type', errors) === 'required' && (
             <WarningLabel>This field is required</WarningLabel>
           )}
-
+          {email && <WarningLabel>Email {email.join()}</WarningLabel>}
           <Label>
             <NameField>Password</NameField>
             <Input
@@ -73,7 +90,7 @@ export default () => {
                 pattern: /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*/,
               })}
               error={_.get('newPassword.type', errors) === 'minLength'}
-              className='form-control form-control-sm'
+              className="form-control form-control-sm"
             />
           </Label>
           {_.get('newPassword.type', errors) === 'pattern' && (
@@ -86,7 +103,9 @@ export default () => {
             <WarningLabel>This field is required</WarningLabel>
           )}
           {_.get('newPassword.type', errors) === 'minLength' && (
-            <WarningLabel>Password must contain at least 8 characters</WarningLabel>
+            <WarningLabel>
+              Password must contain at least 8 characters
+            </WarningLabel>
           )}
           <Label>
             <NameField>Repeat Password</NameField>
@@ -103,7 +122,7 @@ export default () => {
                 },
               })}
               error={errors.passwordConfirmation}
-              className='form-control form-control-sm'
+              className="form-control form-control-sm"
             />
           </Label>
           {errors.passwordConfirmation && (
@@ -250,5 +269,5 @@ const LabelForLink = styled.span`
 const WarningLabel = styled.p`
   color: #f5222d;
   margin-bottom: 12px;
-  margin-top:-12px;
+  margin-top: -12px;
 `

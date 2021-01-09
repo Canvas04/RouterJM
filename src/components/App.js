@@ -19,7 +19,7 @@ export default function App() {
   return (
     <>
       <Switch>
-        {/* <Route path="/" exact component={Articles}></Route> */}
+        <Route path="/" exact component={Articles}></Route>
         <Route path="/articles" component={Articles} exact />
         <Route
           path="/articles/:slug"
@@ -29,7 +29,7 @@ export default function App() {
             return <FullArticle id={slug} />
           }}
         />
-        <Route path="/" exact component={SignUp} />
+        <Route path="/sign-up" exact component={SignUp} />
         <Route path="/sign-in" component={SignIn} />
       </Switch>
     </>

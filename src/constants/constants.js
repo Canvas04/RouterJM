@@ -6,12 +6,15 @@ export const articles = {
 
 export const baseUrl = {
   url: 'https://conduit.productionready.io/api/',
-  sign_up: 'users'
+  sign_up: 'users',
+  login: 'login',
 }
 
 export const registration = {
   SIGN_UP_REQUEST: 'SIGN_UP_REQUEST',
   SIGN_UP_SUCCESS: 'SIGN_UP_SUCCESS',
   SIGN_UP_WRONG: 'SIGN_UP_WRONG',
-  SIGN_IN: 'SIGN_IN',
+  SIGN_IN_REQUEST: 'SIGN_IN_REQUEST',
+  SIGN_IN_SUCCESS: 'SIGN_IN_SUCCESS',
+  SIGN_IN_WRONG: 'SIGN_IN_WRONG',
 }

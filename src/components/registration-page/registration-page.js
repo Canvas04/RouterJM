@@ -20,10 +20,8 @@ export default () => {
     }
     dispatch(sign_up(JSON.stringify(objForRegistration)))
   }
-  // здесь содержится инфа о ошибках , ее надо правильно отобразить и вывести инфу об ошибках
   const repeatedEmailAndUsername = useSelector((store) => store.sign_up)
   const { email, username } = repeatedEmailAndUsername
-  console.log(email, username)
   return (
     <>
       <Registration />
@@ -146,11 +144,11 @@ export default () => {
     </>
   )
 }
-const FormComponent = styled.form`
+export const FormComponent = styled.form`
   max-width: 384px;
   display: flex;
   flex-direction: column;
-  padding: 36.5px 48px;
+  padding: 48px 36.5px;
   background-color: #ffffff;
   border: 1px solid #d9d9d9;
   box-sizing: border-box;
@@ -164,7 +162,7 @@ const FormComponent = styled.form`
   margin-top: 59px;
   margin-bottom: 239px;
 `
-const Header = styled.h1`
+export const Header = styled.h1`
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -175,7 +173,7 @@ const Header = styled.h1`
   justify-content: center;
   margin-bottom: 20px; ;
 `
-const Label = styled.label`
+export const Label = styled.label`
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -185,10 +183,10 @@ const Label = styled.label`
   flex-direction: column;
   margin-bottom: 12px;
 `
-const NameField = styled.p`
+export const NameField = styled.p`
   margin-bottom: 2px;
 `
-const Input = styled.input`
+export const Input = styled.input`
   border: 1px solid #d9d9d9;
   box-sizing: border-box;
   border-radius: 4px;
@@ -196,7 +194,7 @@ const Input = styled.input`
   padding-top: 8px;
   padding-right: 12px;
   padding-bottom: 8px;
-
+  width: 320px;
   border-color: ${(props) => (props.error ? 'red' : '#d9d9d9')};
 `
 const Divider = styled.hr`
@@ -222,11 +220,11 @@ const AgreementLabel = styled.label`
   left: 8px;
   margin: 0;
 `
-const FormWrapper = styled.div`
+export const FormWrapper = styled.div`
   display: flex;
   justify-content: center;
 `
-const Button = styled.button`
+export const Button = styled.button`
   background: #1890ff;
   border-radius: 4px;
   font-family: 'Roboto', sans-serif;
@@ -237,7 +235,7 @@ const Button = styled.button`
   color: #ffffff;
   padding-top: 8px;
   padding-bottom: 8px;
-
+  width: 320px;
   outline: none;
   border: none;
   &:focus {
@@ -250,7 +248,7 @@ const Button = styled.button`
   }
   cursor: pointer;
 `
-const ContainerForLink = styled.div`
+export const ContainerForLink = styled.div`
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: normal;
@@ -259,14 +257,14 @@ const ContainerForLink = styled.div`
   display: flex;
   justify-content: center;
 `
-const StyledLink = styled(Link)`
+export const StyledLink = styled(Link)`
   color: #1890ff;
   margin-left: 3px;
 `
-const LabelForLink = styled.span`
+export const LabelForLink = styled.span`
   color: #8c8c8c;
 `
-const WarningLabel = styled.p`
+export const WarningLabel = styled.p`
   color: #f5222d;
   margin-bottom: 12px;
   margin-top: -12px;

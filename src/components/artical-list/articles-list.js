@@ -23,7 +23,7 @@ export default () => {
       let authorImage
       if (el.author.image) {
         authorImage = el.author.image
-      }else {
+      } else {
         authorImage = defaultAvatar
       }
 
@@ -115,6 +115,7 @@ const LiComponent = styled.li`
   padding: 15px 14px 24px 19px;
   background-color: #fff;
   border-radius: 5px;
+  height: 140px;
 `
 const WrapperComponent = styled.div`
   display: grid;

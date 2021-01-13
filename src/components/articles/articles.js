@@ -63,4 +63,5 @@ const WrapperForAlignment = styled.div`
   display: flex;
   flex-flow: column;
   align-items: center;
+  overflow:hidden;
 `

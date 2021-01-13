@@ -4,9 +4,12 @@ import _ from 'lodash/fp'
 import styled from 'styled-components'
 import Registration from '../registration/registration'
 import { useForm } from 'react-hook-form'
+import {withRouter} from 'react-router-dom'
 import sign_up from '../../redux/sign-up/sign-up-action'
+import login from '../../redux/userState/login-action'
 import { useDispatch, useSelector } from 'react-redux'
-export default () => {
+import { setCookie } from '../sign-in/sign-in'
+const SignUp =  ({history}) => {
   const { register, handleSubmit, errors, getValues } = useForm()
   const dispatch = useDispatch()
   const onSubmit = (data) => {
@@ -18,9 +21,12 @@ export default () => {
         password,
       },
     }
-    dispatch(sign_up(JSON.stringify(objForRegistration)))
+    dispatch(login(JSON.stringify(objForRegistration),'users'))
+    setCookie('email',email)
+    setCookie('password',password)
+    history.push('/')
   }
-  const repeatedEmailAndUsername = useSelector((store) => store.sign_up)
+  const repeatedEmailAndUsername = useSelector((store) => store.userState)
   const { email, username } = repeatedEmailAndUsername
   return (
     <>
@@ -134,7 +140,7 @@ export default () => {
               I agree to the processing of my personal information
             </AgreementLabel>
           </AgreementContainer>
-          <Button type="submit">Create</Button>
+          <Button type='submit'>Create</Button>
           <ContainerForLink>
             <LabelForLink>Already have an account?</LabelForLink>
             <StyledLink to="/sign-in">Sign In</StyledLink>
@@ -269,3 +275,4 @@ export const WarningLabel = styled.p`
   margin-bottom: 12px;
   margin-top: -12px;
 `
+export default withRouter(SignUp)

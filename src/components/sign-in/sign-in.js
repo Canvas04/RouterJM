@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form'
 import _ from 'lodash/fp'
 import { useDispatch, useSelector } from 'react-redux'
 import sign_in from '../../redux/sign-in/sign-in-action'
+import { withRouter } from 'react-router-dom'
+import login from '../../redux/userState/login-action'
 import {
   FormComponent,
   FormWrapper,
@@ -17,7 +19,7 @@ import {
   LabelForLink,
   StyledLink,
 } from '../registration-page/registration-page'
-export default () => {
+const SignIn = ({ history }) => {
   const { register, handleSubmit, errors } = useForm()
   const dispatch = useDispatch()
   const onSubmit = (data) => {
@@ -28,10 +30,14 @@ export default () => {
         password,
       },
     }
-    dispatch(sign_in(JSON.stringify(objForRegistration)))
-  }
-  const invalidData = useSelector((store) => store.sign_in.invalidData)
 
+    dispatch(login(JSON.stringify(objForRegistration), 'users', 'login'))
+    history.push('/')
+    setCookie('email',email)
+    setCookie('password',password)
+  }
+  const errorInData = useSelector((store) => store.userState)
+  const invalidData = errorInData['email or password']
   return (
     <>
       <Registration />
@@ -71,12 +77,14 @@ export default () => {
               className="form-control form-control-sm"
             />
           </Label>
-          
+
           {_.get('newPassword.type', errors) === 'required' && (
             <WarningLabel>This field is required</WarningLabel>
           )}
-         
-          {invalidData && <WarningLabel>Email or password {invalidData.join()}</WarningLabel>}
+
+          {invalidData && (
+            <WarningLabel>Email or password {invalidData.join()}</WarningLabel>
+          )}
           <Button style={{ marginTop: '9px' }} type="submit">
             Login
           </Button>
@@ -88,4 +96,29 @@ export default () => {
       </FormWrapper>
     </>
   )
+}
+
+export default withRouter(SignIn)
+
+export function setCookie(name, value, options = {}) {
+  options = {
+    path: '/',
+    ...options,
+  }
+
+  if (options.expires instanceof Date) {
+    options.expires = options.expires.toUNCString()
+  }
+
+  let updatedCookie = encodeURIComponent(name) + '=' + encodeURIComponent(value)
+
+  for (let optionKey in options) {
+    updatedCookie += '; ' + optionKey
+    let optionValue = options[optionKey]
+    if (optionValue !== true) {
+      updatedCookie += '=' + optionValue
+    }
+  }
+
+  document.cookie = updatedCookie
 }

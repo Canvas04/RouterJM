@@ -11,6 +11,7 @@ import SignUp from './registration-page/registration-page'
 import SignIn from './sign-in/sign-in'
 import ChangingProfile from './change-profile/change-profile'
 import login from '../redux/userState/login-action'
+import NewArticle from './new-article/new-article'
 
 export default function App() {
 
@@ -48,6 +49,7 @@ export default function App() {
         <Route path="/sign-up" exact component={SignUp} />
         <Route path="/sign-in" component={SignIn} />
         <Route path="/profile" component={ChangingProfile} />
+        <Route path='/new-article' component={NewArticle} />
       </Switch>
     </>
   )

@@ -1,9 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Registration from '../registration/registration'
 import { useForm } from 'react-hook-form'
 import _ from 'lodash/fp'
 import { useDispatch, useSelector } from 'react-redux'
-import sign_in from '../../redux/sign-in/sign-in-action'
 import { withRouter } from 'react-router-dom'
 import login from '../../redux/userState/login-action'
 import {
@@ -22,6 +21,7 @@ import {
 const SignIn = ({ history }) => {
   const { register, handleSubmit, errors } = useForm()
   const dispatch = useDispatch()
+  const [flagForWarning, setFlagForWarning] = useState(false)
   const onSubmit = (data) => {
     const { email, newPassword: password } = data
     const objForRegistration = {
@@ -32,12 +32,18 @@ const SignIn = ({ history }) => {
     }
 
     dispatch(login(JSON.stringify(objForRegistration), 'users', 'login'))
-    history.push('/')
-    setCookie('email',email)
-    setCookie('password',password)
+
+    setCookie('email', email)
+    setCookie('password', password)
+    setFlagForWarning(true)
   }
+
   const errorInData = useSelector((store) => store.userState)
   const invalidData = errorInData['email or password']
+  const isLogin = useSelector(store => store.userState.isLogin)
+if(isLogin) {
+  history.push('/')
+}
   return (
     <>
       <Registration />
@@ -82,7 +88,7 @@ const SignIn = ({ history }) => {
             <WarningLabel>This field is required</WarningLabel>
           )}
 
-          {invalidData && (
+          {invalidData && flagForWarning && (
             <WarningLabel>Email or password {invalidData.join()}</WarningLabel>
           )}
           <Button style={{ marginTop: '9px' }} type="submit">

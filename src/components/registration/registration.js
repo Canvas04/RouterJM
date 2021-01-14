@@ -22,12 +22,14 @@ export default function Registration() {
       <RegistrationContainer>
         <NameOfPage>Realworld Blog</NameOfPage>
         <WrapperForButtons>
-          {isLogin && <UserButton />}
+
+         
           {isLogin && (
             <CreatingArticle to="/new-article" style={{ color: '#52c41a' }}>
               Create Article
             </CreatingArticle>
           )}
+           {isLogin && <UserButton />}
           {isLogin && (
             <LogoutButton
               onClick={onLogoutClickHandler}

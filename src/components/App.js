@@ -57,7 +57,7 @@ export default function App() {
   )
 }
 
-function getCookie(name) {
+export function getCookie(name) {
   let matches = document.cookie.match(
     new RegExp(
       '(?:^|; )' +

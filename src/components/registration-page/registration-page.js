@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import _ from 'lodash/fp'
 import styled from 'styled-components'
@@ -24,8 +24,14 @@ const SignUp =  ({history}) => {
     dispatch(login(JSON.stringify(objForRegistration),'users'))
     setCookie('email',email)
     setCookie('password',password)
+
+  }
+  const isLogin = useSelector((store) => store.userState.isLogin)
+  useEffect(() => {
+    if (isLogin) {
     history.push('/')
   }
+  })
   const repeatedEmailAndUsername = useSelector((store) => store.userState)
   const { email, username } = repeatedEmailAndUsername
   return (

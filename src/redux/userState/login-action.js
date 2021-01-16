@@ -1,3 +1,4 @@
+import { setCookie } from '../../components/sign-in/sign-in'
 import { registration, baseUrl } from '../../constants/constants'
 
 const { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_WRONG, LOG_OUT } = registration
@@ -40,6 +41,8 @@ export default (user, url1 = '',url2='',token='',method='POST') => {
 
       if (attemptSignIn.ok) {
         const successRequest = await attemptSignIn.json()
+        const token = successRequest.user.token
+        setCookie('token',`Token ${token}`)
         dispatch(successLogin(successRequest))
       } else {
         const dataAboutErrors = await attemptSignIn.json()

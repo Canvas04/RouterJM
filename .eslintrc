@@ -6,8 +6,8 @@
     ,
     "rules": {
         "jsx-quotes": [
-            1,
-            "prefer-double"
+            2,
+            "prefer-single"
         ],
         "no-console": 2,
         "no-debugger":2

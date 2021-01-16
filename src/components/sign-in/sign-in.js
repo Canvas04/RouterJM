@@ -22,6 +22,9 @@ const SignIn = ({ history }) => {
   const { register, handleSubmit, errors } = useForm()
   const dispatch = useDispatch()
   const [flagForWarning, setFlagForWarning] = useState(false)
+  const errorInData = useSelector((store) => store.userState)
+  const invalidData = errorInData['email or password'] || []
+  const isLogin = useSelector((store) => store.userState.isLogin)
   const onSubmit = (data) => {
     const { email, newPassword: password } = data
     const objForRegistration = {
@@ -38,12 +41,12 @@ const SignIn = ({ history }) => {
     setFlagForWarning(true)
   }
 
-  const errorInData = useSelector((store) => store.userState)
-  const invalidData = errorInData['email or password']
-  const isLogin = useSelector(store => store.userState.isLogin)
-if(isLogin) {
-  history.push('/')
-}
+  useEffect(() => {
+    if (isLogin) {
+      history.push('/')
+    }
+  }, [history, isLogin])
+
   return (
     <>
       <Registration />
@@ -53,13 +56,13 @@ if(isLogin) {
           <Label>
             <NameField>Email adress</NameField>
             <Input
-              name="email"
-              placeholder="Email adress"
+              name='email'
+              placeholder='Email adress'
               ref={register({
                 required: true,
                 pattern: /.+@.+\..+/i,
               })}
-              className="form-control form-control-sm"
+              className='form-control form-control-sm'
               autoFocus
             />
           </Label>
@@ -72,15 +75,15 @@ if(isLogin) {
           <Label>
             <NameField>Password</NameField>
             <Input
-              name="newPassword"
-              placeholder="Password"
+              name='newPassword'
+              placeholder='Password'
               ref={register({
                 required: true,
                 minLength: 8,
                 pattern: /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*/,
               })}
               error={_.get('newPassword.type', errors) === 'minLength'}
-              className="form-control form-control-sm"
+              className='form-control form-control-sm'
             />
           </Label>
 
@@ -88,15 +91,17 @@ if(isLogin) {
             <WarningLabel>This field is required</WarningLabel>
           )}
 
-          {invalidData && flagForWarning && (
-            <WarningLabel>Email or password {invalidData.join()}</WarningLabel>
+          {!isLogin && flagForWarning && (
+            <WarningLabel>
+              Email or password {errorInData && invalidData.join()}
+            </WarningLabel>
           )}
-          <Button style={{ marginTop: '9px' }} type="submit">
+          <Button style={{ marginTop: '9px' }} type='submit'>
             Login
           </Button>
           <ContainerForLink>
             <LabelForLink>Don’t have an account? </LabelForLink>
-            <StyledLink to="/sign-up">Sign Up</StyledLink>
+            <StyledLink to='/sign-up'>Sign Up</StyledLink>
           </ContainerForLink>
         </FormComponent>
       </FormWrapper>

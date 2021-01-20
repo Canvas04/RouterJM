@@ -19,7 +19,7 @@ export default (state = initialState, action) => {
     case LOGIN_SUCCESS:
       return { ...action.payload, isLogin: true }
     case LOGIN_WRONG:
-      return { ...action.payload, isLogin: false }
+      return initialState
     case LOG_OUT:
       return initialState
     default:

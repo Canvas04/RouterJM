@@ -13,13 +13,22 @@ import Registration from '../registration/registration'
 import AddTag from '../add-tag/add-tag'
 import { useDispatch, useSelector } from 'react-redux'
 import login from '../../redux/userState/login-action'
-import {getCookie} from '../App'
-const NewArticle =  ({history}) => {
+import { getCookie } from '../App'
+const NewArticle = ({ history }) => {
   const { register, handleSubmit, errors } = useForm()
-  const [isSend,setIsSend] = useState(false)
+  const [isSend, setIsSend] = useState(false)
   const tagList = useSelector((store) => store.creationTags.tagList)
   const dispatch = useDispatch()
-console.log(getCookie('token'))
+  const currentPath = history.location.pathname
+  const token = getCookie('token')
+  const slug = currentPath
+    .split('/')
+    .filter((el) => el.match(':'))
+    .join('').replace(':','')
+
+  const headerText = currentPath.match('edit')
+    ? 'Edit article'
+    : 'Create new article'
   const onSubmit = (data) => {
     const { title, description, body } = data
     const objForCreationArticle = {
@@ -30,22 +39,42 @@ console.log(getCookie('token'))
         tagList,
       },
     }
-    dispatch(login(JSON.stringify(objForCreationArticle), 'articles', '',getCookie('token')))
+
+    if (currentPath.match('edit')) {
+      dispatch(
+        login(
+          JSON.stringify(objForCreationArticle),
+          'articles',
+          slug,
+          token,
+          'PUT'
+        )
+      )
+    } else {
+      dispatch(
+        login(
+          JSON.stringify(objForCreationArticle),
+          'articles',
+          '',
+          getCookie('token')
+        )
+      )
+    }
     setIsSend(true)
   }
 
-useEffect(() => {
-  if(isSend) {
-    history.push('/')
-  }
-})
+  useEffect(() => {
+    if (isSend) {
+      history.push('/')
+    }
+  })
   return (
     <>
       <Registration />
       <FormWrapper>
         <FormContainer>
           <FormComponent id='form' onSubmit={handleSubmit(onSubmit)}>
-            <Header>Create new article</Header>
+            <Header>{headerText}</Header>
             <Label>
               <NameField>Title</NameField>
               <Input
@@ -130,7 +159,6 @@ export const Input = styled.input`
   width: 320px;
   border-color: ${(props) => (props.error ? 'red' : '#d9d9d9')};
   width: 100%;
-  width: ${(props) => (props.type = 'description' && '35%')};
 `
 export const Label = styled.label`
   font-family: Roboto;

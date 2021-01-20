@@ -1,17 +1,29 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import Markdown from 'markdown-to-jsx'
 import likeImage from '../artical-list/like.svg'
 import pressedLike from '../artical-list/pressed-like.svg'
+import Modal from '../modal/modal'
+import { openModal } from '../../redux/modal-delete/modal-delete-action'
+import Registration from '../registration/registration'
+import { Link } from 'react-router-dom'
+
 export default ({ id }) => {
   const [likedQ, setLikedQ] = useState(false)
   const [uri, setUri] = useState(likeImage)
   const { articles } = useSelector((store) => store.loadArticles.articles)
+  const isLogin = useSelector((store) => store.userState.isLogin)
+  const { isOpened } = useSelector((store) => store.stateModal)
+  const dispatch = useDispatch()
   const options = {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+  }
+  const ownerAccount = useSelector(store => store.userState.user.username)
+  const deleteButtonHandler = () => {
+    dispatch(openModal())
   }
   const onButtonClickHandler = () => {
     setLikedQ(!likedQ)
@@ -32,13 +44,14 @@ export default ({ id }) => {
       const body = `${el.body}`
       const date = new Date(el.createdAt)
       const formattedDate = `${date.toLocaleString('en-US', options)}`
+      const description = `${el.description}`
       return (
         <WrapperForArticle key={el.slug}>
           <ContainerForHeaderAndButton>
             <Header children={title}></Header>
             <LikeComponent>
               <ButtonLike onClick={onButtonClickHandler}>
-                <img src={uri} />
+                <img src={uri} alt='like' />
               </ButtonLike>
               <QuantityLikes children={favoritesCount} />
             </LikeComponent>
@@ -46,9 +59,10 @@ export default ({ id }) => {
           <ProfileImgWrapper>
             <img
               src={el.author.image}
-              width="46px"
-              height="46px"
-              alt="author"
+              width='46px'
+              height='46px'
+              alt='author'
+              style={{borderRadius: '50%'}}
             />
           </ProfileImgWrapper>
           <NameComponent children={userName}>
@@ -56,18 +70,49 @@ export default ({ id }) => {
           </NameComponent>
           <DateComponent children={formattedDate} />
           <GenreArticle isTaglist={el.tagList.length}>
-            {el.tagList.map((el,i) => {
+            {el.tagList.map((el, i) => {
               return (
-                <WrapperForGenreArticle key={el} index={i}>{el}</WrapperForGenreArticle>
+                <WrapperForGenreArticle key={el} index={i}>
+                  {el}
+                </WrapperForGenreArticle>
               )
             })}
           </GenreArticle>
-          <ContainerForText children={body} />
+          <ContainerForDescription children={description} />
+          <ContainerForBody children={body} />
+          {isLogin && userName === ownerAccount &&(
+            <>
+              <ContainerForButtons>
+                <StyledButton
+                  className='btn btn-outline-danger'
+                  style={{ width: '5rem', height: '2rem' }}
+                  type='button'
+                  onClick={deleteButtonHandler}
+                >
+                  Delete
+                </StyledButton>
+                {isOpened && <Modal slug={el.slug} />}
+              </ContainerForButtons>
+              <StyledButton
+                className='btn btn-outline-success'
+                style={{
+                  width: '4rem',
+                  height: '2rem',
+                  gridRow: '4/5',
+                  gridColumn: '4/5',
+                }}
+                type='button'
+              >
+              <StyledLink to={`/articles/:${el.slug}/edit`}>Edit</StyledLink>  
+              </StyledButton>
+            </>
+          )}
         </WrapperForArticle>
       )
     })
     return (
       <>
+        <Registration />
         <WrapperForAlignment>{elements}</WrapperForAlignment>
       </>
     )
@@ -89,7 +134,8 @@ const WrapperForArticle = styled.div`
   padding-top: 17px;
   padding-right: 14px;
   padding-left: 16px;
-  row-gap:5px;
+  row-gap: 5px;
+  max-width: 58em;
 `
 const Header = styled(Markdown)`
   color: #1890ff;
@@ -146,7 +192,6 @@ const DateComponent = styled(Markdown)`
   align-items: center;
   color: rgba(0, 0, 0, 0.5);
   position: relative;
-  top: -26px;
 `
 const GenreArticle = styled.div`
   font-style: normal;
@@ -156,23 +201,51 @@ const GenreArticle = styled.div`
   color: rgba(0, 0, 0, 0.5);
   grid-row: 2/3;
   grid-column: 1/3;
-  display: ${props => props.isTaglist > 0 ? 'flex': 'none'};
+  display: ${(props) => (props.isTaglist > 0 ? 'flex' : 'none')};
 `
 const WrapperForGenreArticle = styled.span`
   border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 2px;
   padding: 2px;
-  margin-left: ${props => props.index === 0 ? '0' : '5px'};
+  margin-left: ${(props) => (props.index === 0 ? '0' : '5px')};
 `
-const ContainerForText = styled(Markdown)`
+const ContainerForDescription = styled(Markdown)`
   grid-column: 1/3;
   font-style: normal;
-  font-weight: normal;
+  font-weight: 400;
   font-size: 12px;
   line-height: 22px;
-  color: rgba(0, 0, 0, 0.75);
-  position:relative;
-  top:-5px;
+  color: rgba(0, 0, 0, 0.5);
+  position: relative;
+  top: -5px;
+  grid-row: 4/5;
 `
 const LikeComponent = styled.div``
 const QuantityLikes = styled(Markdown)``
+
+const StyledButton = styled.button`
+  font-size: 0.875rem;
+`
+const ContainerForButtons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  grid-row: 4/5;
+  grid-column: 3/4;
+  position: relative;
+`
+const ContainerForBody = styled(Markdown)`
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1.25rem;
+  grid-row: 6/7;
+  grid-column: 1/3;
+`
+const StyledLink = styled(Link)`
+  display: block;
+  color: inherit;
+  &:hover {
+    text-decoration: none;
+    color:inherit;
+  }
+`

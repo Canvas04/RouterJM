@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
@@ -17,6 +17,8 @@ export default () => {
     month: 'long',
     day: 'numeric',
   }
+  const { isLogin } = useSelector((store) => store.userState)
+
 
   if (articles) {
     const articlesItem = articles.map((el) => {
@@ -39,6 +41,7 @@ export default () => {
       }
       const date = new Date(el.createdAt)
       const path = el.slug
+     
       return (
         <LiComponent key={el.slug}>
           <WrapperComponent>
@@ -68,6 +71,7 @@ export default () => {
                   width="46px"
                   height="46px"
                   alt="author"
+                  style={{borderRadius: '50%'}}
                 />
               </ErrorBoundary>
             </ProfileImgWrapper>

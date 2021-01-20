@@ -4,14 +4,18 @@ import image from './warning.svg'
 import arrow from './arrow.svg'
 import { useDispatch } from 'react-redux'
 import { closeModal } from '../../redux/modal-delete/modal-delete-action'
-
-export default () => {
+import login from '../../redux/userState/login-action'
+import {getCookie} from '../App'
+import { Link } from 'react-router-dom'
+export default ({slug}) => {
+  const token = getCookie('token')
   const dispatch = useDispatch()
   const noButtonHandler = () => {
     dispatch(closeModal())
   }
   const yesButtonHandler = () => {
     dispatch(closeModal())
+    dispatch(login('','articles',`${slug}`,token,'DELETE'))
   }
   return (
     <>
@@ -27,8 +31,8 @@ export default () => {
           >
             No
           </StyledButton>
-          <StyledButton type='button' className='btn btn-outline-primary' onClick={yesButtonHandler}>
-            Yes
+          <StyledButton type='button' style={{padding: '0'}} className='btn btn-outline-primary' onClick={yesButtonHandler} >
+         <StyledLink to='/'> Yes</StyledLink>  
           </StyledButton>
         </ContainterForButtons>
       </Container>
@@ -47,7 +51,7 @@ const Container = styled.div`
   border-radius: 0.25rem;
   padding: 0.75rem 1rem;
   width: 15rem;
-  left: 16.8rem;
+  left: 7.8rem;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
 
   &::before {
@@ -81,4 +85,11 @@ const Icon = styled.span`
   background-repeat: no-repeat;
   position: relative;
   top: 3px;
+`
+const StyledLink = styled(Link)`
+display:block;
+padding:0.5rem;
+&:hover {
+  text-decoration: none;
+}
 `

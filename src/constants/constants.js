@@ -23,3 +23,8 @@ export const registration = {
   LOG_OUT: 'LOG_OUT',
   UPDATE_USER: 'UPDATE_USER',
 }
+
+export const modal = {
+  OPENED: 'OPEN',
+  CLOSED: 'CLOSED'
+}

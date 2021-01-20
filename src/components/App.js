@@ -15,8 +15,11 @@ import SignIn from './sign-in/sign-in'
 import ChangingProfile from './change-profile/change-profile'
 import login from '../redux/userState/login-action'
 import NewArticle from './new-article/new-article'
+import PrivateRoute from './PrivateRoute'
+import ChangeArticle from './new-article/new-article'
 
 export default function App() {
+  
   const isLogin = useSelector((store) => store.userState.isLogin)
 
   const dispatch = useDispatch()
@@ -40,6 +43,7 @@ export default function App() {
         <Route path='/' exact component={Articles}></Route>
         <Route path='/articles' component={Articles} exact />
         <Route
+        exact
           path='/articles/:slug'
           render={({ match }) => {
             const { slug } = match.params
@@ -47,7 +51,14 @@ export default function App() {
             return <FullArticle id={slug} />
           }}
         />
+        <Route
+          path='/articles/:slug/edit'
+          render={({ match }) => {
+            const { slug } = match.params
 
+            return <ChangeArticle />
+          }}
+        />
         <Route path='/sign-up' exact component={SignUp} />
         <Route path='/sign-in' component={SignIn} />
         <Route path='/profile' component={ChangingProfile} />

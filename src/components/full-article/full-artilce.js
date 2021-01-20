@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import Markdown from 'markdown-to-jsx'
@@ -8,6 +8,10 @@ import Modal from '../modal/modal'
 import { openModal } from '../../redux/modal-delete/modal-delete-action'
 import Registration from '../registration/registration'
 import { Link } from 'react-router-dom'
+import like from '../../redux/userState/login-action'
+import dislike from '../../redux/userState/login-action'
+import login from '../../redux/userState/login-action'
+import { getCookie } from '../App'
 
 export default ({ id }) => {
   const [likedQ, setLikedQ] = useState(false)
@@ -15,24 +19,40 @@ export default ({ id }) => {
   const { articles } = useSelector((store) => store.loadArticles.articles)
   const isLogin = useSelector((store) => store.userState.isLogin)
   const { isOpened } = useSelector((store) => store.stateModal)
+  const token = getCookie('token')
   const dispatch = useDispatch()
   const options = {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   }
-  const ownerAccount = useSelector(store => store.userState.user.username)
+  const objForLogin = {
+    user: {
+      email: getCookie('email'),
+      password: getCookie('password'),
+    },
+  }
+  const queryForLikes = id.replace(/:/, '') + '/favorite'
+  const ownerAccount = useSelector((store) => store.userState.user.username)
   const deleteButtonHandler = () => {
     dispatch(openModal())
   }
   const onButtonClickHandler = () => {
     setLikedQ(!likedQ)
     if (likedQ) {
-      setUri(pressedLike)
-    } else {
       setUri(likeImage)
+
+      dispatch(like('', 'articles', queryForLikes, token, 'DELETE'))
+    } else {
+      setUri(pressedLike)
+
+      dispatch(dislike('', 'articles', queryForLikes, token, 'POST'))
     }
   }
+  useEffect(() => {
+    dispatch(login(JSON.stringify(objForLogin), 'users', 'login'))
+  })
+
   if (articles && id) {
     const searchedArticle = articles.filter(
       (el) => el.slug === id.replace(/:/g, '')
@@ -62,7 +82,7 @@ export default ({ id }) => {
               width='46px'
               height='46px'
               alt='author'
-              style={{borderRadius: '50%'}}
+              style={{ borderRadius: '50%' }}
             />
           </ProfileImgWrapper>
           <NameComponent children={userName}>
@@ -80,7 +100,7 @@ export default ({ id }) => {
           </GenreArticle>
           <ContainerForDescription children={description} />
           <ContainerForBody children={body} />
-          {isLogin && userName === ownerAccount &&(
+          {isLogin && userName === ownerAccount && (
             <>
               <ContainerForButtons>
                 <StyledButton
@@ -103,7 +123,7 @@ export default ({ id }) => {
                 }}
                 type='button'
               >
-              <StyledLink to={`/articles/:${el.slug}/edit`}>Edit</StyledLink>  
+                <StyledLink to={`/articles/:${el.slug}/edit`}>Edit</StyledLink>
               </StyledButton>
             </>
           )}
@@ -246,6 +266,6 @@ const StyledLink = styled(Link)`
   color: inherit;
   &:hover {
     text-decoration: none;
-    color:inherit;
+    color: inherit;
   }
 `

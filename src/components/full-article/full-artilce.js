@@ -37,10 +37,10 @@ export default ({ id }) => {
   const deleteButtonHandler = () => {
     dispatch(openModal())
   }
-  const onButtonClickHandler = () => {
+  const onButtonClickHandler = (favorited) => {
   
-    setLikedQ(!likedQ)
-    if (likedQ) {
+    
+    if (favorited) {
       dispatch(estimateArticle('', 'articles', queryForLikes, token, 'DELETE'))
     } else {
       dispatch(estimateArticle('', 'articles', queryForLikes, token, 'POST'))
@@ -65,7 +65,7 @@ export default ({ id }) => {
           <ContainerForHeaderAndButton>
             <Header children={title}></Header>
             <LikeComponent>
-              <ButtonLike onClick={() => onButtonClickHandler()}>
+              <ButtonLike onClick={() => onButtonClickHandler(el.favorited)}>
                 <img src={el.favorited ? pressedLike: likeImage} alt='like' />
               </ButtonLike>
             

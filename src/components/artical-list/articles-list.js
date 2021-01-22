@@ -10,14 +10,18 @@ import ErrorBoundary from '../error-boundary/error-boundary'
 import pressedLike from './pressed-like.svg'
 import defaultAvatar from './avatar.svg'
 import { Link, Route, Switch } from 'react-router-dom'
+import { estimateArticle } from '../../redux/userState/login-action'
+import { getCookie } from '../App'
 export default () => {
   const articles = useSelector((store) => store.loadArticles.articles.articles)
+  const dispatch = useDispatch()
   const options = {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   }
   const { isLogin } = useSelector((store) => store.userState)
+  const token = getCookie('token')
 
 
   if (articles) {
@@ -29,14 +33,14 @@ export default () => {
         authorImage = defaultAvatar
       }
 
-      const [likedQ, setLikedQ] = useState(false)
+      
       const [uri, setUri] = useState(likeImage)
-      const onButtonClickHandler = () => {
-        setLikedQ(!likedQ)
-        if (likedQ) {
-          setUri(pressedLike)
+      const onButtonClickHandler = (favorited) => {
+
+        if (favorited) {
+          dispatch(estimateArticle('', 'articles', el.slug + '/favorite', token, 'DELETE'))
         } else {
-          setUri(likeImage)
+          dispatch(estimateArticle('', 'articles', el.slug+ '/favorite', token, 'POST'))
         }
       }
       const date = new Date(el.createdAt)
@@ -56,8 +60,8 @@ export default () => {
                 {el.title}
               </Link>
               <LikeComponent>
-                <ButtonLike onClick={onButtonClickHandler}>
-                  <img height="14px" src={uri} alt="like" />
+                <ButtonLike onClick={() =>onButtonClickHandler(el.favorited)}>
+                  <img height="14px" src={el.favorited ? pressedLike: likeImage} alt="like" />
                 </ButtonLike>
 
                 <QuantityLikes>{el.favoritesCount}</QuantityLikes>

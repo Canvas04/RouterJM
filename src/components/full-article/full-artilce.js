@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import Markdown from 'markdown-to-jsx'
@@ -8,14 +8,13 @@ import Modal from '../modal/modal'
 import { openModal } from '../../redux/modal-delete/modal-delete-action'
 import Registration from '../registration/registration'
 import { Link } from 'react-router-dom'
-import like from '../../redux/userState/login-action'
-import dislike from '../../redux/userState/login-action'
+import { estimateArticle } from '../../redux/userState/login-action'
 import login from '../../redux/userState/login-action'
 import { getCookie } from '../App'
 
 export default ({ id }) => {
   const [likedQ, setLikedQ] = useState(false)
-  const [uri, setUri] = useState(likeImage)
+  
   const { articles } = useSelector((store) => store.loadArticles.articles)
   const isLogin = useSelector((store) => store.userState.isLogin)
   const { isOpened } = useSelector((store) => store.stateModal)
@@ -32,31 +31,27 @@ export default ({ id }) => {
       password: getCookie('password'),
     },
   }
+
   const queryForLikes = id.replace(/:/, '') + '/favorite'
   const ownerAccount = useSelector((store) => store.userState.user.username)
   const deleteButtonHandler = () => {
     dispatch(openModal())
   }
   const onButtonClickHandler = () => {
+  
     setLikedQ(!likedQ)
     if (likedQ) {
-      setUri(likeImage)
-
-      dispatch(like('', 'articles', queryForLikes, token, 'DELETE'))
+      dispatch(estimateArticle('', 'articles', queryForLikes, token, 'DELETE'))
     } else {
-      setUri(pressedLike)
-
-      dispatch(dislike('', 'articles', queryForLikes, token, 'POST'))
+      dispatch(estimateArticle('', 'articles', queryForLikes, token, 'POST'))
     }
   }
-  useEffect(() => {
-    dispatch(login(JSON.stringify(objForLogin), 'users', 'login'))
-  })
 
   if (articles && id) {
     const searchedArticle = articles.filter(
       (el) => el.slug === id.replace(/:/g, '')
     )
+
     const elements = searchedArticle.map((el) => {
       const title = `# ${el.title}`
       const favoritesCount = `${el.favoritesCount}`
@@ -70,9 +65,10 @@ export default ({ id }) => {
           <ContainerForHeaderAndButton>
             <Header children={title}></Header>
             <LikeComponent>
-              <ButtonLike onClick={onButtonClickHandler}>
-                <img src={uri} alt='like' />
+              <ButtonLike onClick={() => onButtonClickHandler()}>
+                <img src={el.favorited ? pressedLike: likeImage} alt='like' />
               </ButtonLike>
+            
               <QuantityLikes children={favoritesCount} />
             </LikeComponent>
           </ContainerForHeaderAndButton>
@@ -101,6 +97,7 @@ export default ({ id }) => {
           <ContainerForDescription children={description} />
           <ContainerForBody children={body} />
           {isLogin && userName === ownerAccount && (
+             
             <>
               <ContainerForButtons>
                 <StyledButton
@@ -181,6 +178,7 @@ const ButtonLike = styled.button`
   &:focus {
     outline: none;
   }
+  cursor: pointer;
 `
 const ProfileImgWrapper = styled.div`
   grid-column: 4/5;
@@ -240,7 +238,9 @@ const ContainerForDescription = styled(Markdown)`
   top: -5px;
   grid-row: 4/5;
 `
-const LikeComponent = styled.div``
+const LikeComponent = styled.div`
+  
+`
 const QuantityLikes = styled(Markdown)``
 
 const StyledButton = styled.button`

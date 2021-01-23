@@ -23,7 +23,7 @@ const SignIn = ({ history }) => {
   const dispatch = useDispatch()
   const [flagForWarning, setFlagForWarning] = useState(false)
   const errorInData = useSelector((store) => store.userState)
-  const invalidData = errorInData['email or password'] || []
+  const invalidData = useSelector(store => store.userState['email or password'])
   const isLogin = useSelector((store) => store.userState.isLogin)
   const onSubmit = (data) => {
     const { email, newPassword: password } = data
@@ -38,7 +38,23 @@ const SignIn = ({ history }) => {
 
     setCookie('email', email)
     setCookie('password', password)
-    setFlagForWarning(true)
+    
+
+    fetch('https://conduit.productionready.io/api/users/login',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        
+      },
+      body: JSON.stringify(objForRegistration)
+    })
+    .then(res => {
+      if(res.status !== '200') {
+        setFlagForWarning(true)
+      }
+      
+    })
+    
   }
 
   useEffect(() => {
@@ -46,7 +62,6 @@ const SignIn = ({ history }) => {
       history.push('/')
     }
   }, [history, isLogin])
-
   return (
     <>
       <Registration />
@@ -91,9 +106,10 @@ const SignIn = ({ history }) => {
             <WarningLabel>This field is required</WarningLabel>
           )}
 
-          {!isLogin && flagForWarning && (
+          { flagForWarning && (
+            
             <WarningLabel>
-              Email or password {errorInData && invalidData.join()}
+              Email or password are invalid
             </WarningLabel>
           )}
           <Button style={{ marginTop: '9px' }} type='submit'>

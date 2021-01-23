@@ -24,6 +24,8 @@ const wrongLogin = (payload) => ({
   payload,
 })
 
+const estimate = (payload) => ({type: 'ESTIMATE',payload})
+
 export default (user, url1 = '',url2='',token='',method='POST') => {
   return async (dispatch) => {
     
@@ -53,5 +55,32 @@ export default (user, url1 = '',url2='',token='',method='POST') => {
     }
   }
 }
+
+export const estimateArticle = (user, url1 = '',url2='',token='',method='POST') => {
+  return async (dispatch) => {
+    
+    try {
+      const attemptSignIn = await fetch(`${url}${url1}/${url2}`, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+           Authorization: token 
+        },
+       
+      })
+
+      if (attemptSignIn.ok) {
+        const successRequest = await attemptSignIn.json()
+        dispatch(estimate(successRequest))
+      } else {
+        const dataAboutErrors = await attemptSignIn.json()
+        throw dataAboutErrors
+      }
+    } catch (error) {
+      // dispatch(wrongLogin(error.errors))
+    }
+  }
+}
+
 
 export const logOut = () => ({ type: LOG_OUT })

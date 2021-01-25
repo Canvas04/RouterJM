@@ -28,3 +28,9 @@ export const modal = {
 	OPENED: 'OPEN',
 	CLOSED: 'CLOSED',
 }
+
+export const tags = {
+	TYPE: 'TYPE',
+	ADD_TAG: 'ADD_TAG',
+	REMOVE_TAG: 'REMOVE_TAG'
+}

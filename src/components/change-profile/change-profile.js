@@ -10,9 +10,6 @@ import {
   NameField,
   Input,
   Button,
-  ContainerForLink,
-  LabelForLink,
-  StyledLink,
 } from '../registration-page/registration-page'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
@@ -45,8 +42,8 @@ export default () => {
           <Label>
             <NameField>Username</NameField>
             <Input
-              name="username"
-              placeholder="Username"
+              name='username'
+              placeholder='Username'
               autoFocus
               ref={register({
     
@@ -55,7 +52,7 @@ export default () => {
                 minLength: 3,
                 pattern: /^[A-Za-z]+$/i,
               })}
-              className="form-control form-control-sm"
+              className='form-control form-control-sm'
             />
           </Label>
           {_.get('username.type', errors) === 'required' && (
@@ -64,13 +61,13 @@ export default () => {
           <Label>
             <NameField>Email adress</NameField>
             <Input
-              name="email"
-              placeholder="Email adress"
+              name='email'
+              placeholder='Email adress'
               ref={register({
                 required: true,
                 pattern: /.+@.+\..+/i,
               })}
-              className="form-control form-control-sm"
+              className='form-control form-control-sm'
             />
           </Label>
           {_.get('email.type', errors) === 'pattern' && (
@@ -82,8 +79,8 @@ export default () => {
           <Label>
             <NameField>New password</NameField>
             <Input
-              name="newPassword"
-              placeholder="Password"
+              name='newPassword'
+              placeholder='Password'
               ref={register({
                 required: true,
                 minLength: 8,
@@ -91,7 +88,7 @@ export default () => {
                 pattern: /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*/,
               })}
               error={_.get('newPassword.type', errors) === 'minLength'}
-              className="form-control form-control-sm"
+              className='form-control form-control-sm'
             />
           </Label>
 
@@ -117,19 +114,20 @@ export default () => {
           <Label>
             <NameField>Avatar image(url)</NameField>
             <Input
-              name="avatarImage"
-              placeholder="avatarImage"
+              name='avatarImage'
+              placeholder='avatarImage'
               ref={register({
+                // eslint-disable-next-line no-useless-escape
                 pattern: /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
               })}
               error={_.get('newPassword.type', errors) === 'minLength'}
-              className="form-control form-control-sm"
+              className='form-control form-control-sm'
             />
           </Label>
           {_.get('avatarImage.type', errors) === 'pattern' && (
             <WarningLabel>Incorrect url</WarningLabel>
           )}
-          <Button style={{ marginTop: '9px' }} type="submit">
+          <Button style={{ marginTop: '9px' }} type='submit'>
             Save
           </Button>
         </FormComponent>

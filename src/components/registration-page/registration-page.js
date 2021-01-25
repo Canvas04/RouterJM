@@ -5,7 +5,6 @@ import styled from 'styled-components'
 import Registration from '../registration/registration'
 import { useForm } from 'react-hook-form'
 import {withRouter} from 'react-router-dom'
-import sign_up from '../../redux/sign-up/sign-up-action'
 import login from '../../redux/userState/login-action'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCookie } from '../sign-in/sign-in'
@@ -40,11 +39,11 @@ const SignUp =  ({history}) => {
       <FormWrapper>
         <FormComponent onSubmit={handleSubmit(onSubmit)}>
           <Header>Create new account</Header>
-          <Label label="username">
+          <Label label='username'>
             <NameField>Username</NameField>
             <Input
-              name="username"
-              placeholder="Username"
+              name='username'
+              placeholder='Username'
               autoFocus
               ref={register({
                 required: true,
@@ -52,7 +51,7 @@ const SignUp =  ({history}) => {
                 minLength: 3,
                 pattern: /^[A-Za-z]+$/i,
               })}
-              className="form-control form-control-sm"
+              className='form-control form-control-sm'
             />
           </Label>
           {_.get('username.type', errors) === 'required' && (
@@ -73,13 +72,13 @@ const SignUp =  ({history}) => {
           <Label>
             <NameField>Email adress</NameField>
             <Input
-              name="email"
-              placeholder="Email adress"
+              name='email'
+              placeholder='Email adress'
               ref={register({
                 required: true,
                 pattern: /.+@.+\..+/i,
               })}
-              className="form-control form-control-sm"
+              className='form-control form-control-sm'
             />
           </Label>
           {_.get('email.type', errors) === 'pattern' && (
@@ -92,15 +91,15 @@ const SignUp =  ({history}) => {
           <Label>
             <NameField>Password</NameField>
             <Input
-              name="newPassword"
-              placeholder="Password"
+              name='newPassword'
+              placeholder='Password'
               ref={register({
                 required: true,
                 minLength: 8,
                 pattern: /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*/,
               })}
               error={_.get('newPassword.type', errors) === 'minLength'}
-              className="form-control form-control-sm"
+              className='form-control form-control-sm'
             />
           </Label>
           {_.get('newPassword.type', errors) === 'pattern' && (
@@ -120,8 +119,8 @@ const SignUp =  ({history}) => {
           <Label>
             <NameField>Repeat Password</NameField>
             <Input
-              name="passwordConfirmation"
-              placeholder="Repeat Password"
+              name='passwordConfirmation'
+              placeholder='Repeat Password'
               ref={register({
                 required: 'Please confirm password!',
                 validate: {
@@ -132,7 +131,7 @@ const SignUp =  ({history}) => {
                 },
               })}
               error={errors.passwordConfirmation}
-              className="form-control form-control-sm"
+              className='form-control form-control-sm'
             />
           </Label>
           {errors.passwordConfirmation && (
@@ -141,15 +140,15 @@ const SignUp =  ({history}) => {
 
           <Divider />
           <AgreementContainer>
-            <Checkbox id="check" type="checkbox" required />
-            <AgreementLabel htmlFor="check">
+            <Checkbox id='check' type='checkbox' required />
+            <AgreementLabel htmlFor='check'>
               I agree to the processing of my personal information
             </AgreementLabel>
           </AgreementContainer>
           <Button type='submit'>Create</Button>
           <ContainerForLink>
             <LabelForLink>Already have an account?</LabelForLink>
-            <StyledLink to="/sign-in">Sign In</StyledLink>
+            <StyledLink to='/sign-in'>Sign In</StyledLink>
           </ContainerForLink>
         </FormComponent>
       </FormWrapper>

@@ -25,7 +25,6 @@ export default (state = initialState, action) => {
       const prevArticles = state.articles.articles
       const newArticles = prevArticles.map((el) => {
         if (el.slug === slug) {
-          const { favoritesCount, favorited } = el
           return {
             ...el,
             favorited: newArticle.favorited,

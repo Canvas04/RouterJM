@@ -2,7 +2,7 @@ import { setCookie } from '../../components/sign-in/sign-in'
 import { registration, baseUrl } from '../../constants/constants'
 
 const { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_WRONG, LOG_OUT } = registration
-const { url, login, sign_up } = baseUrl
+const { url } = baseUrl
 const status = {
   SUCCESS: 'success',
   ERROR: 'error',

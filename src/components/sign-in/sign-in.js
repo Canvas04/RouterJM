@@ -22,8 +22,6 @@ const SignIn = ({ history }) => {
   const { register, handleSubmit, errors } = useForm()
   const dispatch = useDispatch()
   const [flagForWarning, setFlagForWarning] = useState(false)
-  const errorInData = useSelector((store) => store.userState)
-  const invalidData = useSelector(store => store.userState['email or password'])
   const isLogin = useSelector((store) => store.userState.isLogin)
   const onSubmit = (data) => {
     const { email, newPassword: password } = data

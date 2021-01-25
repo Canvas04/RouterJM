@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import Markdown from 'markdown-to-jsx'
@@ -9,11 +9,9 @@ import { openModal } from '../../redux/modal-delete/modal-delete-action'
 import Registration from '../registration/registration'
 import { Link } from 'react-router-dom'
 import { estimateArticle } from '../../redux/userState/login-action'
-import login from '../../redux/userState/login-action'
 import { getCookie } from '../App'
 
 export default ({ id }) => {
-  const [likedQ, setLikedQ] = useState(false)
   
   const { articles } = useSelector((store) => store.loadArticles.articles)
   const isLogin = useSelector((store) => store.userState.isLogin)
@@ -24,12 +22,6 @@ export default ({ id }) => {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
-  }
-  const objForLogin = {
-    user: {
-      email: getCookie('email'),
-      password: getCookie('password'),
-    },
   }
 
   const queryForLikes = id.replace(/:/, '') + '/favorite'

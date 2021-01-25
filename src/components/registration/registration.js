@@ -1,55 +1,12 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import UserButton from '../user-button/user-button'
 import { logOut } from '../../redux/userState/login-action'
 import {setCookie} from '../sign-in/sign-in'
-import login from '../../redux/userState/login-action'
-import { getCookie } from '../App'
 
 const WrapperForButtons = styled.div``
-
-function Registration() {
-  const { isLogin } = useSelector((store) => store.userState)
-  console.log(isLogin)
-  const dispatch = useDispatch()
-  const onLogoutClickHandler = () => {
-    dispatch(logOut())
-    deleteCookie('email')
-    deleteCookie('password')
-    deleteCookie('token')
-  }
- 
-  return (
-    <>
-      <RegistrationContainer>
-        <NameOfPage>Realworld Blog</NameOfPage>
-        <WrapperForButtons>
-
-         
-          {isLogin && (
-            <CreatingArticle to="/new-article" style={{ color: '#52c41a' }}>
-              Create Article
-            </CreatingArticle>
-          )}
-           {isLogin && <UserButton />}
-          {isLogin && (
-            <LogoutButton
-              onClick={onLogoutClickHandler}
-              style={{ color: 'rgba(0, 0, 0, 0.75)' }}
-              to="/"
-            >
-              Log out
-            </LogoutButton>
-          )}
-          {!isLogin && <SignIn to='/sign-in'>Sign In</SignIn>}
-          {!isLogin && <SignUp to="/sign-up">Sign Up</SignUp>}
-        </WrapperForButtons>
-      </RegistrationContainer>
-    </>
-  )
-}
 
 const RegistrationMemo = React.memo(() =>{
   const { isLogin } = useSelector((store) => store.userState)
@@ -69,7 +26,7 @@ const RegistrationMemo = React.memo(() =>{
 
          
           {isLogin && (
-            <CreatingArticle to="/new-article" style={{ color: '#52c41a' }}>
+            <CreatingArticle to='/new-article' style={{ color: '#52c41a' }}>
               Create Article
             </CreatingArticle>
           )}
@@ -78,13 +35,13 @@ const RegistrationMemo = React.memo(() =>{
             <LogoutButton
               onClick={onLogoutClickHandler}
               style={{ color: 'rgba(0, 0, 0, 0.75)' }}
-              to="/"
+              to='/'
             >
               Log out
             </LogoutButton>
           )}
           {!isLogin && <SignIn to='/sign-in'>Sign In</SignIn>}
-          {!isLogin && <SignUp to="/sign-up">Sign Up</SignUp>}
+          {!isLogin && <SignUp to='/sign-up'>Sign Up</SignUp>}
         </WrapperForButtons>
       </RegistrationContainer>
     </>

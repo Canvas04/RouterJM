@@ -1,5 +1,5 @@
 import { Pagination } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,7 +9,6 @@ import Registration from '../registration/registration'
 import './articles.scss'
 import ArticlesList from '../artical-list/articles-list'
 import ErrorBoundary from '../error-boundary/error-boundary'
-import { Link } from 'react-router-dom'
 import { getCookie } from '../App'
 export default () => {
   const isFetching = useSelector((store) => store.loadArticles.isFetching)

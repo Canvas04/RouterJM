@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { addTag, removeTag, typeInput } from '../../redux/creation-tags/action'
 import {
-  Button,
   Label,
   NameField,
 } from '../registration-page/registration-page'

@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles'
-import LinearProgress from '@material-ui/core/LinearProgress'
 import likeImage from './like.svg'
-import { Pagination } from 'antd'
-import { loadArticles } from '../../redux/req-articles/action'
 import ErrorBoundary from '../error-boundary/error-boundary'
 import pressedLike from './pressed-like.svg'
 import defaultAvatar from './avatar.svg'
-import { Link, Route, Switch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { estimateArticle } from '../../redux/userState/login-action'
 import { getCookie } from '../App'
 export default () => {
@@ -20,7 +16,6 @@ export default () => {
     month: 'long',
     day: 'numeric',
   }
-  const { isLogin } = useSelector((store) => store.userState)
   const token = getCookie('token')
 
 
@@ -34,7 +29,6 @@ export default () => {
       }
 
       
-      const [uri, setUri] = useState(likeImage)
       const onButtonClickHandler = (favorited) => {
 
         if (favorited) {
@@ -61,7 +55,7 @@ export default () => {
               </Link>
               <LikeComponent>
                 <ButtonLike onClick={() =>onButtonClickHandler(el.favorited)}>
-                  <img height="14px" src={el.favorited ? pressedLike: likeImage} alt="like" />
+                  <img height='14px' src={el.favorited ? pressedLike: likeImage} alt='like' />
                 </ButtonLike>
 
                 <QuantityLikes>{el.favoritesCount}</QuantityLikes>
@@ -69,12 +63,12 @@ export default () => {
             </Header>
 
             <ProfileImgWrapper>
-              <ErrorBoundary type="img">
+              <ErrorBoundary type='img'>
                 <img
                   src={authorImage}
-                  width="46px"
-                  height="46px"
-                  alt="author"
+                  width='46px'
+                  height='46px'
+                  alt='author'
                   style={{borderRadius: '50%'}}
                 />
               </ErrorBoundary>
@@ -212,14 +206,6 @@ const ContainerForText = styled.div`
   position: relative;
   top: -5px;
 `
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    '& > * + *': {
-      marginTop: theme.spacing(2),
-    },
-  },
-}))
 
 const ButtonLike = styled.button`
   border: 0;

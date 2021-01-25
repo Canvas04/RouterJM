@@ -1,6 +1,6 @@
 import { registration } from '../../constants/constants'
 
-const { LOGIN_SUCCESS, LOGIN_WRONG, LOG_OUT, UPDATE_USER } = registration
+const { LOGIN_SUCCESS, LOGIN_WRONG, LOG_OUT } = registration
 const initialState = {
   isLogin: false,
   user: {

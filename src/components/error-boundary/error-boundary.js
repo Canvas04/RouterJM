@@ -1,4 +1,3 @@
-import { render } from '@testing-library/react'
 import React, { Component } from 'react'
 import profile from '../artical-list/avatar.svg'
 import { Alert } from 'antd'
@@ -16,7 +15,7 @@ class ErrorBoundary extends Component {
     const { hasError } = this.state
     if (type === 'img') {
       if (hasError) {
-        return <img src={profile} alt="profile" />
+        return <img src={profile} alt='profile' />
       }
       return this.props.children
     }

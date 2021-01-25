@@ -14,9 +14,9 @@ export default () => {
 
   return (
     <>
-      <Button style={{color: 'rgba(0,0,0,0.75)', textDecoration: 'none' }} to="/profile">
+      <Button style={{color: 'rgba(0,0,0,0.75)', textDecoration: 'none' }} to='/profile'>
         <AuthorLabel>{username}</AuthorLabel>
-        <img src={imgPath} alt="avatar" width="46px" height="46px" style={{borderRadius: '50%'}}/>
+        <img src={imgPath} alt='avatar' width='46px' height='46px' style={{borderRadius: '50%'}}/>
       </Button>
     </>
   )

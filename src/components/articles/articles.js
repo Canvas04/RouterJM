@@ -10,38 +10,37 @@ import './articles.scss'
 import ArticlesList from '../artical-list/articles-list'
 import ErrorBoundary from '../error-boundary/error-boundary'
 import { Link } from 'react-router-dom'
+import { getCookie } from '../App'
 export default () => {
   const isFetching = useSelector((store) => store.loadArticles.isFetching)
   const isError = useSelector((store) => store.loadArticles.isError)
-  const classes = useStyles()
   const dispatch = useDispatch()
+  const classes = useStyles()
+  const token = getCookie('token')
+
   const onChangeHandler = (currentPage) => {
-    let queryForRequest = 0
+    let queryForRequest = 10
     for (let i = 0; i < currentPage; i++) {
-      queryForRequest += 5
+      queryForRequest += 10
     }
-    dispatch(loadArticles(queryForRequest))
+    dispatch(loadArticles(queryForRequest,token))
   }
-  
+
   return (
     <>
       <Registration />
       <WrapperForAlignment>
-        <ErrorBoundary type="common" isErrorDurationLoading={isError}>
+        <ErrorBoundary type='common' isErrorDurationLoading={isError}>
           {isFetching ? (
             <div className={classes.root}>
-              <LinearProgress color="secondary" />
+              <LinearProgress color='secondary' />
             </div>
           ) : (
             <ArticlesList />
           )}
 
           <PaginationWrapper isFetching={isFetching}>
-            <Pagination
-              size={'small'}
-              total={200}
-              onChange={onChangeHandler}
-            />
+            <Pagination size={'small'} total={200} onChange={onChangeHandler} />
           </PaginationWrapper>
         </ErrorBoundary>
       </WrapperForAlignment>
@@ -58,10 +57,11 @@ const useStyles = makeStyles((theme) => ({
 }))
 const PaginationWrapper = styled.div`
   display: ${(props) => (props.isFetching ? 'none' : 'block')};
+  margin-bottom:15px;
 `
 const WrapperForAlignment = styled.div`
   display: flex;
   flex-flow: column;
   align-items: center;
-  overflow:hidden;
+  overflow: hidden;
 `

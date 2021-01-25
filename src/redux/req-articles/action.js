@@ -27,14 +27,15 @@ const errorLoadArticles = (error) => {
   }
 }
 
-export const loadArticles = (page) => {
+export const loadArticles = (page=0,token='') => {
   return async (dispatch) => {
     dispatch(requestArticles())
     try {
-      const loadedArticles = await fetch(`${url}articles?offset=${page}&limit=5`, {
+      const loadedArticles = await fetch(`${url}articles?offset=${page}&limit=10`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json;charset=utf-8',
+          Authorization: token 
         },
       })
       const articles = await loadedArticles.json()

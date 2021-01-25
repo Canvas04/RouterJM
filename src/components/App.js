@@ -25,67 +25,60 @@ export default function App() {
       password: savedPassword,
     },
   }
-
+  const token = getCookie('token')
   useEffect(() => {
-    dispatch(loadArticles())
+    dispatch(loadArticles(token))
     dispatch(login(JSON.stringify(objForRegistration), 'users', 'login'))
-
-    return () => {
-      // dispatch(loadArticles())
-      // dispatch(login(JSON.stringify(objForRegistration), 'users', 'login'))
-    }
   })
 
   return (
     <>
-    {
-      !isLogin ?  (
-<Switch>
-<Route path='/' exact component={Articles}></Route>
-<Route path='/articles' component={Articles} exact />
-<Route
-          exact
-          path='/articles/:slug'
-          render={({ match }) => {
-            const { slug } = match.params
-
-            return <FullArticle id={slug} />
-          }}
-        />
-         <Route path='/sign-up' exact component={SignUp} />
-          <Route path='/sign-in' component={SignIn} />
-</Switch>
-      ): (
+      {!isLogin ? (
         <Switch>
           <Route path='/' exact component={Articles}></Route>
-        <Route path='/articles' component={Articles} exact />
-        <Route
-          exact
-          path='/articles/:slug'
-          render={({ match }) => {
-            const { slug } = match.params
+          <Route path='/articles' component={Articles} exact />
+          <Route
+            exact
+            path='/articles/:slug'
+            render={({ match }) => {
+              const { slug } = match.params
 
-            return <FullArticle id={slug} />
-          }}
+              return <FullArticle id={slug} />
+            }}
           />
           <Route path='/sign-up' exact component={SignUp} />
           <Route path='/sign-in' component={SignIn} />
- 
-        <Route
-          path='/articles/:slug/edit'
-          render={({ match }) => {
-            const { slug } = match.params
-
-            return <ChangeArticle />
-          }}
-        />
-        <Route path='/profile' component={ChangingProfile} />
-        <Route path='/new-article' component={NewArticle} />
         </Switch>
-      )
-    }
+      ) : (
+        <Switch>
+          <Route path='/' exact component={Articles}></Route>
+          <Route path='/articles' component={Articles} exact />
+          <Route
+            exact
+            path='/articles/:slug'
+            render={({ match }) => {
+              const { slug } = match.params
 
-    {/* <Switch>
+              return <FullArticle id={slug} />
+            }}
+          />
+          <Route path='/sign-up' exact component={SignUp} />
+          <Route path='/sign-in' component={SignIn} />
+
+          <Route
+            path='/articles/:slug/edit'
+            render={({ match }) => {
+              const { slug } = match.params
+
+              return <ChangeArticle />
+            }}
+          />
+          <Route path='/profile' component={ChangingProfile} />
+          <Route path='/new-article' component={NewArticle} />
+        </Switch>
+      )}
+
+      {/* <Switch>
         <Route path='/' exact component={Articles}></Route>
         <Route path='/articles' component={Articles} exact />
         <Route

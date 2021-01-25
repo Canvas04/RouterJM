@@ -1,8 +1,9 @@
 import {tags} from '../../constants/constants.js'
 
-const {TYPE,ADD_TAG,REMOVE_TAG} = tags
+const {TYPE,ADD_TAG,REMOVE_TAG,CLEAR} = tags
 
-export default (state = { tagList: [], inputData: [] }, action) => {
+const initialState = { tagList: [], inputData: [] }
+export default (state = initialState, action) => {
   switch (action.type) {
     case TYPE:
       return {
@@ -21,6 +22,8 @@ export default (state = { tagList: [], inputData: [] }, action) => {
       const { tagList } = state
       const resArr = tagList.filter((el, i) => i !== removingElementId)
       return { ...state, tagList: resArr }
+    case CLEAR: 
+    return initialState
     default:
       return state
   }

@@ -24,6 +24,7 @@ export default () => {
         <ButtonAdd
           className='btn btn-outline-danger'
           type='button'
+          value={valueInput}
           onClick={() => dispatch(removeTag(i))}
         >
           Delete

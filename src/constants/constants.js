@@ -32,5 +32,6 @@ export const modal = {
 export const tags = {
 	TYPE: 'TYPE',
 	ADD_TAG: 'ADD_TAG',
-	REMOVE_TAG: 'REMOVE_TAG'
+	REMOVE_TAG: 'REMOVE_TAG',
+	CLEAR: 'CLEAR'
 }

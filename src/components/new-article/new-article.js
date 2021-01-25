@@ -14,6 +14,7 @@ import AddTag from '../add-tag/add-tag'
 import { useDispatch, useSelector } from 'react-redux'
 import login from '../../redux/userState/login-action'
 import { getCookie } from '../App'
+import { clearInput } from '../../redux/creation-tags/action'
 const NewArticle = ({ history }) => {
   const { register, handleSubmit, errors } = useForm()
   const [isSend, setIsSend] = useState(false)
@@ -40,7 +41,7 @@ const NewArticle = ({ history }) => {
         tagList,
       },
     }
-
+    dispatch(clearInput())
     if (currentPath.match('edit')) {
       dispatch(
         login(

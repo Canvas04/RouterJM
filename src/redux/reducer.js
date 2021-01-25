@@ -4,8 +4,8 @@ import userState from './userState/userState'
 import creationTags from './creation-tags/creation-tags'
 import stateModal from './modal-delete/modal-reducer'
 export default combineReducers({
-	loadArticles,
-	userState,
-	creationTags,
-	stateModal,
+  loadArticles,
+  userState,
+  creationTags,
+  stateModal,
 })

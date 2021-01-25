@@ -11,56 +11,56 @@ import ArticlesList from '../artical-list/articles-list'
 import ErrorBoundary from '../error-boundary/error-boundary'
 import { getCookie } from '../App'
 export default () => {
-	const isFetching = useSelector((store) => store.loadArticles.isFetching)
-	const isError = useSelector((store) => store.loadArticles.isError)
-	const dispatch = useDispatch()
-	const classes = useStyles()
-	const token = getCookie('token')
+  const isFetching = useSelector((store) => store.loadArticles.isFetching)
+  const isError = useSelector((store) => store.loadArticles.isError)
+  const dispatch = useDispatch()
+  const classes = useStyles()
+  const token = getCookie('token')
 
-	const onChangeHandler = (currentPage) => {
-		let queryForRequest = 10
-		for (let i = 0; i < currentPage; i++) {
-			queryForRequest += 10
-		}
-		dispatch(loadArticles(queryForRequest, token))
-	}
+  const onChangeHandler = (currentPage) => {
+    let queryForRequest = 10
+    for (let i = 0; i < currentPage; i++) {
+      queryForRequest += 10
+    }
+    dispatch(loadArticles(queryForRequest, token))
+  }
 
-	return (
-		<>
-			<Registration />
-			<WrapperForAlignment>
-				<ErrorBoundary type="common" isErrorDurationLoading={isError}>
-					{isFetching ? (
-						<div className={classes.root}>
-							<LinearProgress color="secondary" />
-						</div>
-					) : (
-						<ArticlesList />
-					)}
+  return (
+    <>
+      <Registration />
+      <WrapperForAlignment>
+        <ErrorBoundary type='common' isErrorDurationLoading={isError}>
+          {isFetching ? (
+            <div className={classes.root}>
+              <LinearProgress color='secondary' />
+            </div>
+          ) : (
+            <ArticlesList />
+          )}
 
-					<PaginationWrapper isFetching={isFetching}>
-						<Pagination size={'small'} total={200} onChange={onChangeHandler} />
-					</PaginationWrapper>
-				</ErrorBoundary>
-			</WrapperForAlignment>
-		</>
-	)
+          <PaginationWrapper isFetching={isFetching}>
+            <Pagination size={'small'} total={200} onChange={onChangeHandler} />
+          </PaginationWrapper>
+        </ErrorBoundary>
+      </WrapperForAlignment>
+    </>
+  )
 }
 const useStyles = makeStyles((theme) => ({
-	root: {
-		width: '100%',
-		'& > * + *': {
-			marginTop: theme.spacing(2),
-		},
-	},
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
 }))
 const PaginationWrapper = styled.div`
-	display: ${(props) => (props.isFetching ? 'none' : 'block')};
-	margin-bottom: 15px;
+  display: ${(props) => (props.isFetching ? 'none' : 'block')};
+  margin-bottom: 15px;
 `
 const WrapperForAlignment = styled.div`
-	display: flex;
-	flex-flow: column;
-	align-items: center;
-	overflow: hidden;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  overflow: hidden;
 `

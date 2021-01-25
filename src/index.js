@@ -9,20 +9,20 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import rootReducer from './redux/reducer'
 import './fonts/font.scss'
 const composeEnhancers =
-	typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-		? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-		: compose
+  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+    : compose
 
 const store = createStore(
-	rootReducer,
-	composeEnhancers(applyMiddleware(reduxThunk))
+  rootReducer,
+  composeEnhancers(applyMiddleware(reduxThunk))
 )
 const customHistory = createHashHistory()
 render(
-	<Provider store={store}>
-		<Router history={customHistory}>
-			<App />
-		</Router>
-	</Provider>,
-	document.getElementById('root')
+  <Provider store={store}>
+    <Router history={customHistory}>
+      <App />
+    </Router>
+  </Provider>,
+  document.getElementById('root')
 )

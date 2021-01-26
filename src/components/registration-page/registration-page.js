@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import { withRouter } from 'react-router-dom'
 import login from '../../redux/userState/login-action'
 import { useDispatch, useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
 import { setCookie } from '../sign-in/sign-in'
 const SignUp = ({ history }) => {
   const { register, handleSubmit, errors, getValues } = useForm()
@@ -154,6 +155,9 @@ const SignUp = ({ history }) => {
     </>
   )
 }
+SignUp.propTypes = {
+  history: PropTypes.object,
+}
 export const FormComponent = styled.form`
   max-width: 384px;
   display: flex;
@@ -207,6 +211,10 @@ export const Input = styled.input`
   width: 320px;
   border-color: ${(props) => (props.error ? 'red' : '#d9d9d9')};
 `
+Input.propTypes = {
+  error: PropTypes.bool
+}
+
 const Divider = styled.hr`
   height: 1px;
   color: #e8e8e8;

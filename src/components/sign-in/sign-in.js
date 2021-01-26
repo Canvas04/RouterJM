@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Registration from '../registration/registration'
 import { useForm } from 'react-hook-form'
+import PropTypes from 'prop-types'
 import _ from 'lodash/fp'
 import { useDispatch, useSelector } from 'react-redux'
 import { withRouter } from 'react-router-dom'
@@ -114,7 +115,9 @@ const SignIn = ({ history }) => {
     </>
   )
 }
-
+SignIn.propTypes = {
+  history: PropTypes.object,
+}
 export default withRouter(SignIn)
 
 export function setCookie(name, value, options = {}) {

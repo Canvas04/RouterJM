@@ -8,7 +8,7 @@ import { setCookie } from '../sign-in/sign-in'
 
 const WrapperForButtons = styled.div``
 
-const RegistrationMemo = React.memo(() => {
+export default () => {
   const { isLogin } = useSelector((store) => store.userState)
   const dispatch = useDispatch()
   const onLogoutClickHandler = () => {
@@ -44,9 +44,8 @@ const RegistrationMemo = React.memo(() => {
       </RegistrationContainer>
     </>
   )
-})
+}
 
-export default RegistrationMemo
 const RegistrationContainer = styled.header`
   background-color: #fff;
   padding: 9px 22px 15px 22px;

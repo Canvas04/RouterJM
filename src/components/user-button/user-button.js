@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 import profileImg from '../artical-list/avatar.svg'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 export default () => {
   const { user } = useSelector((store) => store.userState)
   const { image, username } = user
@@ -41,6 +42,9 @@ const Button = styled(Link)`
   cursor: pointer;
   margin-right: 27px;
 `
+Button.propTypes = {
+  style: PropTypes.object,
+}
 const AuthorLabel = styled.span`
   font-family: Inter;
   font-style: normal;

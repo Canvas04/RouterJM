@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 import image from './warning.svg'
 import arrow from './arrow.svg'
 import { useDispatch } from 'react-redux'
@@ -7,7 +8,7 @@ import { closeModal } from '../../redux/modal-delete/modal-delete-action'
 import login from '../../redux/userState/login-action'
 import { getCookie } from '../App'
 import { Link } from 'react-router-dom'
-export default ({ slug }) => {
+const Modal = ({ slug }) => {
   const token = getCookie('token')
   const dispatch = useDispatch()
   const noButtonHandler = () => {
@@ -44,7 +45,10 @@ export default ({ slug }) => {
     </>
   )
 }
-
+Modal.propTypes = {
+  slug: PropTypes.string,
+}
+export default Modal
 const Container = styled.div`
   position: absolute;
   background: #ffffff;
@@ -69,6 +73,10 @@ const Container = styled.div`
     left: -5px;
   }
 `
+Container.propTypes = {
+  arrow: PropTypes.string,
+}
+
 const WarningText = styled.p`
   font-family: 'Roboto';
   font-size: 0.875rem;
@@ -79,6 +87,12 @@ const StyledButton = styled.button`
   font-size: 0.875rem;
   font-family: 'Roboto';
 `
+StyledButton.propTypes= {
+  type: PropTypes.string,
+  className: PropTypes.string,
+  onClick: PropTypes.func,
+  style: PropTypes.object
+}
 const ContainterForButtons = styled.div`
   grid-row: 2/3;
   grid-column: 2/3;
